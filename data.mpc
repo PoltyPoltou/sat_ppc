@@ -1,0 +1,4 @@
+{
+  "--output-time" : true,
+  "--solver-statistics" : true
+}
