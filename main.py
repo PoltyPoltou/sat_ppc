@@ -1,5 +1,6 @@
+import multiprocessing
 import sys
-from time import time
+from time import sleep, time
 from set_sat import Set_Sat
 
 
@@ -19,7 +20,8 @@ def sgp_set_to_sat(groups,
                 schedule[w][g] = sgp.add_set_var(
                     range(g*size, (g+1)*size), range(g*size, (g+1)*size))
             else:
-                schedule[w][g] = sgp.add_set_var([], range(n_golfers))
+                schedule[w][g] = sgp.add_set_var(
+                    [i for i in range(size) if i % groups == g], range(n_golfers))
 
     for w in range(weeks):
         for g in range(groups):
@@ -62,11 +64,17 @@ def sgp_set_to_sat(groups,
 
 
 def benchmark(name, g, s, weeks):
-    f = open("./set_sat/{}_{}-{}.txt".format(name, g, s), "x")
-    for w in weeks:
-        sgp_set_to_sat(g, s, w, f)
-        f.flush()
-    f.close()
+    with open("./set_sat/{}_{}-{}.txt".format(name, g, s), "x") as f:
+        for w in weeks:
+            sgp_set_to_sat(g, s, w, f)
+            f.flush()
+
+
+def bench_core(name, g, s, weeks):
+    th = multiprocessing.Process(
+        target=lambda: benchmark(name, g, s, weeks))
+    th.start()
+    return th
 
 
 if __name__ == "__main__":
@@ -83,8 +91,12 @@ if __name__ == "__main__":
 
     elif len(sys.argv) == 4:
         sgp_set_to_sat(int(sys.argv[1]), int(sys.argv[2]), int(sys.argv[3]))
-    elif sys.argv[-1] == "bench":
-        name = "seteq"
-        benchmark(name, 5, 3, range(1, 8))
-        benchmark(name, 5, 4, range(1, 6))
-        benchmark(name, 8, 4, range(1, 8))
+    elif len(sys.argv) == 3 and sys.argv[1] == "bench":
+        name = sys.argv[2]
+        th = bench_core(name, 5, 3, range(1, 12))
+        th1 = bench_core(name, 5, 4, range(1, 10))
+        th2 = bench_core(name, 8, 4, range(1, 10))
+        sleep(3600)
+        th.terminate()
+        th1.terminate()
+        th2.terminate()

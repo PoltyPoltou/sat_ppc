@@ -1,6 +1,8 @@
+import multiprocessing
+from contextlib import redirect_stdout
 import sys
 import itertools
-from time import time
+from time import sleep, time
 import pysat.solvers
 import pysat.formula
 
@@ -30,8 +32,7 @@ class SGP:
         self.solver.add_clause(clause)
         self.cnf.append(clause)
 
-    def print_solution(self):
-        print(self.groups, self.size, self.weeks)
+    def print_solution(self, f=sys.stdout):
         if self.solver.status:
             schedule = []
             for w in range(self.weeks):
@@ -54,20 +55,15 @@ class SGP:
             for w in schedule:
                 for g in w:
                     for i in g:
-                        print("{0:2}".format(i), end="")
-                        print(" ", end="")
-                    print("| ", end="")
-                print("")
+                        print("{0:2}".format(i), end="", file=f)
+                        print(" ", end="", file=f)
+                    print("| ", end="", file=f)
+                print("", file=f)
         else:
-            print("UNSAT")
+            print("UNSAT", file=f)
 
     def solve(self):
-        print("---------start solving---------")
-        start = time()
         self.solver.solve()
-        end = time()
-        print(
-            "---------done solving {:.2f}s---------".format(end-start))
 
 
 def golfer_one_group_per_week(sgp_pb: SGP):
@@ -99,6 +95,44 @@ def golfers_arent_social(sgp_pb: SGP):
                                     clause = [-sgp_pb.var_encoding[w1][g1][i1], -sgp_pb.var_encoding[w2][g2]
                                               [i1], -sgp_pb.var_encoding[w1][g1][i2], -sgp_pb.var_encoding[w2][g2][i2]]
                                     sgp_pb.add_clause(clause)
+
+
+def golfers_arent_social_1(sgp_pb: SGP):
+    encounter = [None] * sgp_pb.weeks
+    for w in range(sgp_pb.weeks):
+        encounter[w] = [None] * sgp_pb.groups
+        for g in range(sgp_pb.groups):
+            encounter[w][g] = [None] * sgp_pb.n_golfers
+            for i1 in range(sgp_pb.n_golfers):
+                encounter[w][g][i1] = [None] * sgp_pb.n_golfers
+                for i2 in range(sgp_pb.n_golfers):
+                    if i1 != i2:
+                        encounter[w][g][i1][i2] = sgp_pb.idx_next_var
+                        sgp_pb.idx_next_var += 1
+
+    for w in range(sgp_pb.weeks):
+        for g in range(sgp_pb.groups):
+            for i1 in range(sgp_pb.n_golfers):
+                for i2 in range(sgp_pb.n_golfers):
+                    if i1 != i2:
+                        sgp_pb.add_clause([-sgp_pb.var_encoding[w][g][i1],
+                                           -sgp_pb.var_encoding[w][g][i2],
+                                           encounter[w][g][i1][i2]])
+                        sgp_pb.add_clause([sgp_pb.var_encoding[w][g][i1],
+                                           -encounter[w][g][i1][i2]])
+                        sgp_pb.add_clause([sgp_pb.var_encoding[w][g][i2],
+                                           -encounter[w][g][i1][i2]])
+
+    for w1 in range(sgp_pb.weeks):
+        for w2 in range(sgp_pb.weeks):
+            if(w1 != w2):
+                for i1 in range(sgp_pb.n_golfers):
+                    for i2 in range(sgp_pb.n_golfers):
+                        if(i1 != i2):
+                            for g1 in range(sgp_pb.groups):
+                                for g2 in range(sgp_pb.groups):
+                                    sgp_pb.add_clause([-encounter[w1][g1][i1][i2],
+                                                       -encounter[w2][g2][i1][i2]])
 
 
 def group_size_fixed_binomial_encoding(sgp_pb: SGP):
@@ -151,6 +185,12 @@ def first_week(sgp_pb: SGP):
         for i in range(sgp_pb.size*g, sgp_pb.size*(g+1)):
             clause = [sgp_pb.var_encoding[0][g][i]]
             sgp_pb.add_clause(clause)
+
+
+def second_week(sgp_pb: SGP):
+    for w in range(1, sgp_pb.weeks):
+        for i in range(sgp_pb.size):
+            sgp_pb.add_clause([sgp_pb.var_encoding[w][i % sgp_pb.groups][i]])
 
 
 def order_groups(sgp_pb: SGP):
@@ -310,27 +350,63 @@ def order_week_latch(sgp_pb: SGP):
     return latch_week_list
 
 
-pb = SGP(int(sys.argv[1]), int(sys.argv[2]), int(sys.argv[3]))
-print("---------start modelling---------")
-start_model = time()
+def solver(groups, size, weeks, f=sys.stdout):
+    pb = SGP(groups, size, weeks)
+    start_model = time()
+    # symmetry breaking
+    first_week(pb)
+    second_week(pb)
+    order_group_latch(pb)
+    order_week_latch(pb)
+    # order_groups(pb)
+    # order_weeks(pb)
 
-# symmetry breaking
-first_week(pb)
-order_group_latch(pb)
-order_week_latch(pb)
-# order_groups(pb)
-# order_weeks(pb)
+    # sgp base model
+    golfer_one_group_per_week(pb)
 
-# sgp base model
-golfer_one_group_per_week(pb)
-golfers_arent_social(pb)
-# group_size_fixed_binomial_encoding(pb)
-group_size_fixed_sequential_encoding(pb)
+    golfers_arent_social(pb)
+    # golfers_arent_social_1(pb)
+    # golfers_arent_social_2(pb)
 
-end_model = time()
-print("---------done modelling {:.2f}s---------".format(end_model-start_model))
+    # group_size_fixed_binomial_encoding(pb)
+    group_size_fixed_sequential_encoding(pb)
 
-pb.solve()
-pb.print_solution()
+    end_model = time()
+    print("\n{}-{}-{}\nvariables : {} clauses : {}".format(groups, size,
+          weeks, pb.idx_next_var-1, len(pb.cnf.clauses)), file=f)
+    print(
+        "model : {:.2f}s".format(end_model-start_model), end=" ", file=f)
+    start = time()
+    pb.solve()
+    end = time()
+    print("solve : {:.2f}s".format(end-start), file=f)
+    pb.print_solution(f)
 
-print("end")
+
+def benchmark(name, g, s, weeks):
+    with open("./sat/{}_{}-{}.txt".format(name, g, s), "x") as f:
+        for w in weeks:
+            solver(g, s, w, f)
+            f.flush()
+
+
+def bench_core(name, g, s, weeks):
+    th = multiprocessing.Process(
+        target=lambda: benchmark(name, g, s, weeks))
+    th.start()
+    return th
+
+
+if __name__ == "__main__":
+
+    if len(sys.argv) == 4:
+        solver(int(sys.argv[1]), int(sys.argv[2]), int(sys.argv[3]))
+    elif len(sys.argv) == 3 and sys.argv[1] == "bench":
+        name = sys.argv[2]
+        th = bench_core(name, 5, 3, range(1, 12))
+        th1 = bench_core(name, 5, 4, range(1, 10))
+        th2 = bench_core(name, 8, 4, range(1, 10))
+        sleep(3600)
+        th.terminate()
+        th1.terminate()
+        th2.terminate()
