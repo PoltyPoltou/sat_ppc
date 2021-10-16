@@ -1,6 +1,6 @@
 from time import time
 import sys
-from set_sat_interface import Set_Sat_interface
+from set_sat_interface import *
 import pysat.solvers
 import pysat.formula
 
@@ -42,7 +42,7 @@ class Set_Sat(Set_Sat_interface):
                 idx = self.set_sat_idx[i][key]
                 if idx < len(idx_list) and idx_list[idx] > 0:
                     # last var might not be in the model and unconstrained
-                        solution_set[i].append(key)
+                    solution_set[i].append(key)
         return solution_set
 
     def add_set_var(self, lb, ub):
@@ -60,9 +60,7 @@ class Set_Sat(Set_Sat_interface):
 
         if not self.lbounds[set_idx].issubset(self.ubounds[set_idx]):
             # ub and lb are not compatible, we add -x /\ x in the formula
-            x = self.next_var()
-            self.add_clause([x])
-            self.add_clause([-x])
+            self.unsat_var()
         return set_idx
 
     def intersection(self, i, j, k, left_right=True, right_left=True):
@@ -72,10 +70,6 @@ class Set_Sat(Set_Sat_interface):
             right_left => k ⊆ i intersection j \n
             i,j,k are the indexes of the corresponding sets
         '''
-        if left_right:
-            pass
-        if right_left:
-            pass
         for common_elmt in self.ubounds[i] & self.ubounds[j]:
             if left_right:
                 self.add_clause([-self.set_sat_idx[i][common_elmt],
@@ -111,9 +105,7 @@ class Set_Sat(Set_Sat_interface):
             i,j are the indexes of the corresponding sets
         '''
         if self.lbounds[i] & self.lbounds[j]:
-            x = self.next_var()
-            self.add_clause([x])
-            self.add_clause([-x])
+            self.unsat_var()
         for common_elmt in self.ubounds[i] & self.ubounds[j]:
             self.add_clause([-self.set_sat_idx[i][common_elmt],
                              -self.set_sat_idx[j][common_elmt]])
@@ -156,9 +148,7 @@ class Set_Sat(Set_Sat_interface):
             new_lb = lb_set | self.lbounds[i]
             if not new_lb.issubset(self.ubounds[i]):
                 # ub and lb are not compatible, we add -x /\ x in the formula
-                x = self.next_var()
-                self.add_clause([x])
-                self.add_clause([-x])
+                self.unsat_var()
             for new_elmt in lb_set:
                 self.add_clause([self.set_sat_idx[i][new_elmt]])
 
@@ -173,9 +163,8 @@ class Set_Sat(Set_Sat_interface):
             new_ub = ub_set & self.ubounds[i]
             if not self.lbounds[i].issubset(new_ub):
                 # ub and lb are not compatible, we add -x /\ x in the formula
-                x = self.next_var()
-                self.add_clause([x])
-                self.add_clause([-x])
+                self.unsat_var()
+
             for removed_elmt in self.ubounds[i] - ub_set:
                 self.add_clause([-self.set_sat_idx[i][removed_elmt]])
 
@@ -186,6 +175,23 @@ class Set_Sat(Set_Sat_interface):
         if elmt in self.ubounds[i]:
             self.add_clause([self.set_sat_idx[i][elmt]])
         else:
-            x = self.next_var()
-            self.add_clause([x])
-            self.add_clause([-x])
+            self.unsat_var()
+
+    def order_by_min(self, set_array):
+        '''
+            order the array of sets given as parameters
+            such that forall set i,j i!=j, min(i) <= min(j)
+        '''
+        latch_group_list = [self.latch(self.set_sat_idx[i]) for i in set_array]
+        key_list = [list(self.set_sat_idx[i].keys()) for i in set_array]
+        self.order_by_latch(latch_group_list, key_list)
+
+    def order_by_max(self, set_array):
+        '''
+            order the array of sets given as parameters
+            such that forall set i,j i!=j, max(i) <= max(j)
+        '''
+        latch_group_list = [self.latch(reverse_map(
+            self.set_sat_idx[i])) for i in set_array]
+        key_list = [list(self.set_sat_idx[i].keys()) for i in set_array]
+        self.order_by_latch(latch_group_list, key_list)

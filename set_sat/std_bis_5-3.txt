@@ -43,7 +43,7 @@ model : 0.02s solver : 0.02s
 
 5-3-6
 variables : 16515 clauses : 31105
-model : 0.03s solver : 0.21s
+model : 0.03s solver : 0.23s
 
 |0  1  2  | 3  4  5  | 8  6  7  | 9  10 11 | 12 13 14 | 
 |1  13 5  | 2  10 6  | 8  11 4  | 9  12 7  | 0  3  14 | 
@@ -54,7 +54,7 @@ model : 0.03s solver : 0.21s
 
 5-3-7
 variables : 21990 clauses : 41520
-model : 0.04s solver : 6.04s
+model : 0.04s solver : 6.62s
 
 |0  1  2  | 3  4  5  | 8  6  7  | 9  10 11 | 12 13 14 | 
 |1  10 14 | 2  5  7  | 11 13 6  | 8  4  12 | 0  9  3  | 

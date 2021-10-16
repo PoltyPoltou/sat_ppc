@@ -193,6 +193,11 @@ def second_week(sgp_pb: SGP):
             sgp_pb.add_clause([sgp_pb.var_encoding[w][i % sgp_pb.groups][i]])
 
 
+def groups_with_0(sgp_pb: SGP):
+    for w in range(1, int(sgp_pb.n_golfers / sgp_pb.size)):
+        sgp_pb.add_clause([sgp_pb.var_encoding[w][0][sgp_pb.size*w]])
+
+
 def order_groups(sgp_pb: SGP):
     group_minimums = []
     # min variables declarations
@@ -356,6 +361,7 @@ def solver(groups, size, weeks, f=sys.stdout):
     # symmetry breaking
     first_week(pb)
     second_week(pb)
+    # groups_with_0(pb)
     order_group_latch(pb)
     order_week_latch(pb)
     # order_groups(pb)
@@ -366,7 +372,6 @@ def solver(groups, size, weeks, f=sys.stdout):
 
     golfers_arent_social(pb)
     # golfers_arent_social_1(pb)
-    # golfers_arent_social_2(pb)
 
     # group_size_fixed_binomial_encoding(pb)
     group_size_fixed_sequential_encoding(pb)

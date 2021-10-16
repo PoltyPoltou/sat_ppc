@@ -1,3 +1,4 @@
+intersection true,true
 
 5-3-1
 variables : 15 clauses : 30

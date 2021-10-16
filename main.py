@@ -2,6 +2,7 @@ import multiprocessing
 import sys
 from time import sleep, time
 from set_sat import Set_Sat
+from set_sat_advanced import Set_Sat_Adv
 
 
 def sgp_set_to_sat(groups,
@@ -38,8 +39,11 @@ def sgp_set_to_sat(groups,
                 for g2 in range(groups):
                     k = sgp.add_set_var([], range(n_golfers))
                     sgp.intersection(
-                        schedule[w1][g1], schedule[w2][g2], k, True, True)
+                        schedule[w1][g1], schedule[w2][g2], k, True, False)
                     sgp.cardinal_ub(k, 1)
+    for w in range(weeks):
+        sgp.order_by_min(schedule[w])
+    sgp.order_by_max([schedule[w][0] for w in range(weeks)])
     model_end = time()
 
     mdl = sgp.solve()
