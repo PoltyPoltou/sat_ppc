@@ -32,19 +32,18 @@ class Set_Sat(Set_Sat_interface):
     def model_to_set_solution(self, model):
         if len(model) == 0:
             return []  #  UNSAT
+        # remove negative values
+        sat_var_true = [i for i in model if i > 0]
         #  reindex the model because solvers idexes begin at 0
         idx_list = [0] + model
-        solution_set = [set() for i in range(len(self.set_sat_idx))]
+        solution_set = [list() for i in range(len(self.set_sat_idx))]
         for i in range(len(self.set_sat_idx)):
             for key in self.set_sat_idx[i]:
                 idx = self.set_sat_idx[i][key]
                 if idx < len(idx_list):
                     # last var might not be in the model and unconstrained
-                    if idx + idx_list[idx] != 0:
-                        # the model of the solver
-                        # returns -i if var n°i is false
-                        #  +i if var n°i is true
-                        solution_set[i].add(key)
+                    if idx in sat_var_true:
+                        solution_set[i].append(key)
         return solution_set
 
     def add_set_var(self, lb, ub):
