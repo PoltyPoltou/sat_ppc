@@ -40,9 +40,8 @@ class Set_Sat(Set_Sat_interface):
         for i in range(len(self.set_sat_idx)):
             for key in self.set_sat_idx[i]:
                 idx = self.set_sat_idx[i][key]
-                if idx < len(idx_list):
+                if idx < len(idx_list) and idx_list[idx] > 0:
                     # last var might not be in the model and unconstrained
-                    if idx in sat_var_true:
                         solution_set[i].append(key)
         return solution_set
 
