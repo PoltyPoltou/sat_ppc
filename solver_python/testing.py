@@ -1,7 +1,7 @@
 from set_var import Set_var
 from memento import *
 from constraint import EmptyIntersection, Intersection
-from solver import Model, Propagator
+from solver import *
 
 
 def test_set_var():
@@ -155,6 +155,28 @@ def test_propagator():
     assert h.lb == {3}
 
 
+def test_enum_var_val():
+    f = Set_var([1], [1, 2, 3], (0, 2))
+    g = Set_var([2], [1, 2, 3], (0, 2))
+    h = Set_var([3], [2, 3], (1, 2))
+    c = Intersection(f, g, h)
+    m = Model()
+    m.add_constraint(c)
+
+
+def test_solve():
+    f = Set_var([1], [1, 2, 3], (0, 2))
+    g = Set_var([2], [1, 2, 3], (0, 2))
+    h = Set_var([3], [2, 3], (1, 2))
+    c = Intersection(f, g, h)
+    m = Model()
+    m.add_constraint(c)
+    solve(m)
+    assert f.lb == {1, 3}
+    assert g.lb == {2, 3}
+    assert h.lb == {3}
+
+
 def test_constraints():
     test_empty_intersect()
     test_intersect()
@@ -172,3 +194,5 @@ def test_all():
     test_constraints()
     test_model()
     test_propagator()
+    test_enum_var_val()
+    test_solve()
