@@ -10,6 +10,9 @@ class Memento:
     def revert(self) -> None:
         raise NotImplementedError()
 
+    def effective(self) -> bool:
+        raise NotImplementedError()
+
 
 class LB_memento(Memento):
     def __init__(self, var, to_add: set[int]) -> None:
@@ -29,6 +32,9 @@ class LB_memento(Memento):
             for elmt in self.to_add:
                 self.var.remove_from_lb(elmt)
             self.applied = False
+
+    def effective(self) -> bool:
+        return len(self.to_add) > 0
 
 
 class UB_memento(Memento):
@@ -50,6 +56,9 @@ class UB_memento(Memento):
                 self.var.add_to_ub(elmt)
             self.applied = False
 
+    def effective(self) -> bool:
+        return len(self.to_remove) > 0
+
 
 class Card_memento(Memento):
     def __init__(self, var, new_card: tuple[int, int]) -> None:
@@ -70,3 +79,6 @@ class Card_memento(Memento):
             self.var.set_card(self.old_card)
             self.old_card = None
             self.applied = False
+
+    def effective(self) -> bool:
+        return self.new_card[0] > self.var.card_bounds[0] or self.new_card[1] < self.var.card_bounds[1]
