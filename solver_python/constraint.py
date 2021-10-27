@@ -12,6 +12,9 @@ class Constraint:
     def filter(self) -> list[Memento]:
         raise NotImplementedError()
 
+    def satisfied(self) -> bool:
+        raise NotImplementedError()
+
 
 class EmptyIntersection(Constraint):
     def __init__(self, F: Set_var, G: Set_var) -> None:
@@ -33,6 +36,9 @@ class EmptyIntersection(Constraint):
         # filtering G
         filtering_list.append(UB_memento(self.G, self.G.ub & self.F.lb))
         return filtering_list
+
+    def satisfied(self) -> bool:
+        return self.F.ub.isdisjoint(self.G.ub)
 
 
 class Intersection(Constraint):
@@ -69,6 +75,9 @@ class Intersection(Constraint):
                          )
         )
         return filtering_list
+
+    def satisfied(self) -> bool:
+        return self.H.defined() and self.F.ub & self.G.ub == self.H.lb
 
 
 class MaxCardinalConstraint(Constraint):

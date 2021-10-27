@@ -16,11 +16,12 @@ class LB_memento(Memento):
         self.var = var
         self.to_add = to_add
         self.applied = False
+        self.valid = True
 
     def apply(self) -> None:
         if not self.applied:
             for elmt in self.to_add:
-                self.var.add_to_lb(elmt)
+                self.valid = self.valid & self.var.add_to_lb(elmt)
             self.applied = True
 
     def revert(self) -> None:
@@ -35,11 +36,12 @@ class UB_memento(Memento):
         self.var = var
         self.to_remove = to_remove
         self.applied = False
+        self.valid = True
 
     def apply(self) -> None:
         if not self.applied:
             for elmt in self.to_remove:
-                self.var.remove_from_ub(elmt)
+                self.valid = self.valid & self.var.remove_from_ub(elmt)
             self.applied = True
 
     def revert(self) -> None:
@@ -55,11 +57,12 @@ class Card_memento(Memento):
         self.new_card = new_card
         self.old_card = None
         self.applied = False
+        self.valid = True
 
     def apply(self) -> None:
         if not self.applied:
             self.old_card = self.var.card_bounds
-            self.var.change_card_tuple(self.new_card)
+            self.valid = self.valid & self.var.change_card_tuple(self.new_card)
             self.applied = True
 
     def revert(self) -> None:

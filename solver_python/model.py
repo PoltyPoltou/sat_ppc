@@ -19,7 +19,7 @@ class Sgp:
         for w in range(len(self.schedule)):
             for g in range(len(self.schedule[w])):
                 self.schedule[w, g] = Set_var(
-                    [], list(range(self.n)), (self.size, self.size))
+                    [], list(range(self.n)), (self.size, self.size), "s[{},{}]".format(w, g))
         for w in range(self.weeks):
             for g1 in range(self.groups):
                 for g2 in range(g1):
