@@ -39,7 +39,7 @@ def sgp_set_to_sat(groups,
                 for g2 in range(groups):
                     k = sgp.add_set_var([], range(n_golfers))
                     sgp.intersection(
-                        schedule[w1][g1], schedule[w2][g2], k, True, False)
+                        schedule[w1][g1], schedule[w2][g2], k, True, True)
                     sgp.cardinal_ub(k, 1)
     for w in range(weeks):
         sgp.order_by_min(schedule[w])
@@ -82,16 +82,26 @@ def bench_core(name, g, s, weeks):
 
 
 if __name__ == "__main__":
-
     if sys.argv[-1] == "test":
 
         b = Set_Sat()
-        b.add_set_var([1], [1, 2, 3])
-        b.add_set_var([1], [1, 2, 3])
         b.add_set_var([2], [1, 2, 3])
-        b.intersection(0, 1, 2)
-        print(b.model_to_set_solution(b.solve()))
-        sgp_set_to_sat(5, 3, 6)
+        latch = b.latch_set(0)
+        b.cnf.append([-1])
+        mdl = b.solve()
+        print(b.model_to_set_solution(mdl))
+        for key in latch:
+            print(key, mdl[latch[key]-1])
+
+        c = Set_Sat_Adv()
+        c.add_set_var([], [1, 2, 3])
+        latch = c.latch_set(0)
+        c.cnf.append([-1])
+        c.cnf.append([-2])
+        mdl = c.solve()
+        print(c.model_to_set_solution(mdl))
+        for key in latch:
+            print(key, mdl[latch[key]-1])
 
     elif len(sys.argv) == 4:
         sgp_set_to_sat(int(sys.argv[1]), int(sys.argv[2]), int(sys.argv[3]))

@@ -26,8 +26,7 @@ class Set_Sat(Set_Sat_interface):
         self.solver.append_formula(self.cnf)
         if self.solver.solve():
             return self.solver.get_model()
-        else:
-            return []
+        return []
 
     def model_to_set_solution(self, model):
         if len(model) == 0:
@@ -177,21 +176,71 @@ class Set_Sat(Set_Sat_interface):
         else:
             self.unsat_var()
 
+    def latch_set(self, i, reverse: bool = False):
+        '''
+         defines a latch q_n function of variables x_n of set i,
+         the indexes are given via array_idx\n
+         example : \n
+         x_n = 0 0 0 1 0 1 0 \n
+         q_n = 0 0 0 1 1 1 1 \n
+         with set it is lacunar
+        '''
+        array_idx = reverse_map(
+            self.set_sat_idx[i])if reverse else self.set_sat_idx[i]
+        n = len(array_idx)
+        latch_map = {}
+        if n != 0:
+            key_list_ordered = list(array_idx.keys())
+            for key in array_idx:
+                latch_map[key] = self.next_var()
+            self.add_clause([-latch_map[key_list_ordered[0]]] +
+                            list(array_idx.values()))
+            self.add_clause(
+                [-array_idx[key_list_ordered[0]], latch_map[key_list_ordered[0]]])
+            for i in range(1, n):
+                self.add_clause(
+                    [-array_idx[key_list_ordered[i]], latch_map[key_list_ordered[0]]])
+
+                self.add_clause([-latch_map[key_list_ordered[i]],
+                                 latch_map[key_list_ordered[i-1]]])
+                self.add_clause([-latch_map[key_list_ordered[i]],
+                                 -array_idx[key_list_ordered[i-1]]])
+                self.add_clause([latch_map[key_list_ordered[i]],
+                                array_idx[key_list_ordered[i-1]],
+                                -latch_map[key_list_ordered[i-1]]])
+        return latch_map
+
+    def order_by_latch(self, latch_group_list, set_array):
+        key_list = [list(self.set_sat_idx[i].keys()) for i in set_array]
+        for idx in range(1, len(latch_group_list)):
+            i = 0
+            j = 0
+            while i < len(key_list[idx-1]) and j < len(key_list[idx]):
+                if key_list[idx-1][i] == key_list[idx][j]:
+                    self.add_clause([-latch_group_list[idx-1][i],
+                                    latch_group_list[idx][j]])
+                    i += 1
+                    j += 1
+                elif key_list[idx-1][i] > key_list[idx][j]:
+                    self.add_clause([-latch_group_list[idx-1][i],
+                                    latch_group_list[idx][j]])
+                    j += 1
+                else:  # key_list[idx][j] > key_list[idx-1][i]:
+                    i += 1
+                    pass
+
     def order_by_min(self, set_array):
         '''
             order the array of sets given as parameters
             such that forall set i,j i!=j, min(i) <= min(j)
         '''
-        latch_group_list = [self.latch(self.set_sat_idx[i]) for i in set_array]
-        key_list = [list(self.set_sat_idx[i].keys()) for i in set_array]
-        self.order_by_latch(latch_group_list, key_list)
+        latch_group_list = [self.latch_set(i) for i in set_array]
+        self.order_by_latch(latch_group_list, set_array)
 
     def order_by_max(self, set_array):
         '''
             order the array of sets given as parameters
             such that forall set i,j i!=j, max(i) <= max(j)
         '''
-        latch_group_list = [self.latch(reverse_map(
-            self.set_sat_idx[i])) for i in set_array]
-        key_list = [list(self.set_sat_idx[i].keys()) for i in set_array]
-        self.order_by_latch(latch_group_list, key_list)
+        latch_group_list = [self.latch_set(i, True) for i in set_array]
+        self.order_by_latch(latch_group_list, set_array)

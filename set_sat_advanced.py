@@ -1,4 +1,5 @@
 from set_sat import Set_Sat
+from set_sat_interface import reverse_map
 
 
 class Set_Sat_Adv(Set_Sat):
@@ -7,7 +8,7 @@ class Set_Sat_Adv(Set_Sat):
         self.treillis = []  #  upper_bound - lower_bound
 
     def model_to_set_solution(self, model):
-        if len(model) == 0:
+        if len(model) == 0 and len(self.cnf.clauses) != 0:
             return []  #  UNSAT
         #  reindex the model because solvers idexes begin at 0
         idx_list = [0] + model
@@ -38,6 +39,13 @@ class Set_Sat_Adv(Set_Sat):
             # ub and lb are not compatible, we add -x /\ x in the formula
             self.unsat_var()
         return set_idx
+
+    def solve(self):
+        self.solver.append_formula(self.cnf)
+        if self.solver.solve():
+            return self.solver.get_model()
+        else:
+            return []
 
     def add_clever_clause(self, tuple_set_idx_list):
         '''
@@ -82,40 +90,6 @@ class Set_Sat_Adv(Set_Sat):
                                         (k, elmt, False)])
                 self.add_clever_clause([(j, elmt, True),
                                         (k, elmt, False)])
-        return
-        '''
-            a constraint about intersection\n
-            left_right => i intersection j ⊆ k \n
-            right_left => k ⊆ i intersection j \n
-            i,j,k are the indexes of the corresponding sets
-        '''
-        for elmt in self.lbounds[i]:
-            if elmt in self.lbounds[j]:
-                pass
-            if elmt in self.treillis[j]:
-                pass
-            if elmt not in self.ubounds[j]:
-                self.unsat_var()
-        for elmt in self.treillis[i]:
-            if elmt in self.lbounds[j]:
-                pass
-            if elmt in self.treillis[j]:
-                if left_right:
-                    self.add_clause([-self.set_sat_idx[i][elmt],
-                                    -self.set_sat_idx[j][elmt],
-                                    self.set_sat_idx[k][elmt]])
-                if right_left:
-                    self.add_clause([self.set_sat_idx[i][elmt],
-                                    -self.set_sat_idx[k][elmt]])
-                    self.add_clause([self.set_sat_idx[j][elmt],
-                                    -self.set_sat_idx[k][elmt]])
-            if elmt not in self.ubounds[j]:
-                pass
-        for elmt in self.treillis[i]:
-            if elmt in self.treillis[j]:
-                pass
-            if elmt not in self.ubounds[j]:
-                pass
 
     def intersection_empty(self, i, j):
         '''
@@ -157,14 +131,55 @@ class Set_Sat_Adv(Set_Sat):
         self.cardinal_lb(i, c)
         self.cardinal_ub(i, c)
 
-    def update_lb(self, i, lb):
-        raise NotImplementedError()
+    def latch_set(self, i, reverse: bool = False):
+        '''
+         defines a latch q_n function of variables x_n of set i,
+         the indexes are given via array_idx\n
+         example : \n
+         x_n = 0 0 0 1 0 1 0 \n
+         q_n = 0 0 0 1 1 1 1 \n
+         with set it is lacunar
+        '''
+        latch_map = {}
+        if len(self.set_sat_idx[i]) != 0:
+            array_idx = reverse_map(
+                self.set_sat_idx[i])if reverse else self.set_sat_idx[i]
+            elmt_lb = None  # element of lower bound that must be taken in account in the latch
+            if len(self.lbounds[i]) != 0:
+                if reverse:
+                    elmt_lb = max(self.lbounds[i])
+                    array_idx[max(self.set_sat_idx[i].keys()) - elmt_lb] = 0
+                else:
+                    elmt_lb = min(self.lbounds[i])
+                    array_idx[elmt_lb] = 0
+            n = len(array_idx)
+            if n != 0:
+                key_list_ordered = list(sorted(array_idx.keys()))
+                for key in key_list_ordered:
+                    latch_map[key] = self.next_var()
 
-    def update_ub(self, i, ub):
-        raise NotImplementedError()
+                if elmt_lb != None:
+                    self.add_clause([latch_map[key_list_ordered[0]]])
+                else:
+                    self.add_clause([-latch_map[key_list_ordered[0]]] +
+                                    list(latch_map.values()))
+                    self.add_clause(
+                        [-array_idx[key_list_ordered[0]], latch_map[key_list_ordered[0]]])
+                for i in range(1, n):
+                    if elmt_lb == None:
+                        self.add_clause(
+                            [-array_idx[key_list_ordered[i]], latch_map[key_list_ordered[0]]])
 
-    def union(self, i, j, k, left_right=True, right_left=True):
-        raise NotImplementedError()
-
-    def belongs(self, elmt, i):
-        raise NotImplementedError()
+                    if array_idx[key_list_ordered[i-1]] == 0:
+                        self.add_clause([-latch_map[key_list_ordered[i]],
+                                        latch_map[key_list_ordered[i-1]]])
+                        self.add_clause([-latch_map[key_list_ordered[i]]])
+                    else:
+                        self.add_clause([-latch_map[key_list_ordered[i]],
+                                        latch_map[key_list_ordered[i-1]]])
+                        self.add_clause([-latch_map[key_list_ordered[i]],
+                                        -array_idx[key_list_ordered[i-1]]])
+                        self.add_clause([latch_map[key_list_ordered[i]],
+                                        array_idx[key_list_ordered[i-1]],
+                                        -latch_map[key_list_ordered[i-1]]])
+        return latch_map

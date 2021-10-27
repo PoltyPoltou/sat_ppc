@@ -83,7 +83,7 @@ class Set_Sat_interface:
             clauses.append([-var_idx[-1], -s[-1][k-1]])
             return clauses
 
-    def latch(self, array_idx: dict):
+    def latch(self, array_idx):
         '''
          defines a latch q_n function of variables x_n,
          the indexes are given via array_idx\n
@@ -91,43 +91,16 @@ class Set_Sat_interface:
          x_n = 0 0 0 1 0 1 0 \n
          q_n = 0 0 0 1 1 1 1 \n
         '''
+        latch_lst = []
         n = len(array_idx)
-        if n != 0:
-            latch_map = {}
-            key_list_ordered = list(array_idx.keys())
-            for key in array_idx:
-                latch_map[key] = self.next_var()
-
-            for i in range(1, n):
-                self.add_clause(
-                    [-array_idx[key_list_ordered[i]], latch_map[key_list_ordered[0]]])
-
-                self.add_clause([-latch_map[key_list_ordered[i]],
-                                 latch_map[key_list_ordered[i-1]]])
-                self.add_clause([-latch_map[key_list_ordered[i]],
-                                 -array_idx[key_list_ordered[i-1]]])
-                self.add_clause([latch_map[key_list_ordered[i]],
-                                array_idx[key_list_ordered[i-1]],
-                                -latch_map[key_list_ordered[i-1]]])
-            return latch_map
-
-    def order_by_latch(self, latch_group_list, key_list):
-        for idx in range(1, len(latch_group_list)):
-            i = 0
-            j = 0
-            while i < len(key_list[idx-1]) and j < len(key_list[idx]):
-                if key_list[idx-1][i] == key_list[idx][j]:
-                    self.add_clause([-latch_group_list[idx-1][i],
-                                    latch_group_list[idx][j]])
-                    i += 1
-                    j += 1
-                elif key_list[idx-1][i] > key_list[idx][j]:
-                    self.add_clause([-latch_group_list[idx-1],
-                                    latch_group_list[idx]])
-                    j += 1
-                else:  # key_list[idx][j] > key_list[idx-1][i]:
-                    i += 1
-                    pass
+        for i in range(n):
+            latch_lst.append(self.next_var())
+        for i in range(1, n):
+            self.add_clause([latch_lst[0], -array_idx[i]])
+            self.add_clause([-latch_lst[i], latch_lst[i-1]])
+            self.add_clause([-latch_lst[i], -array_idx[i]])
+            self.add_clause([latch_lst[i], array_idx[i-1], -latch_lst[i-1]])
+        return latch_lst
 
 
 def reverse_map(m: dict):
