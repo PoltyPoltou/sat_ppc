@@ -24,7 +24,7 @@ class Propagator:
         self.model: Model = model  #  model to propagate stuff on
         self.modifications: list[list[Memento]] = [[]]
         self.loops_backtrack = 3
-        self.propagate_loops = 10
+        self.propagate_loops = 10000
 
     def add_level_of_modification(self, new_modifs):
         self.modifications.append(new_modifs)
@@ -50,9 +50,11 @@ class Propagator:
 
             # waking up constraints
             for m in mementos:
-                for new_constraint in self.model.var_to_constraints[m.var]:
-                    if new_constraint != constraint:
-                        woken_constraints.add(new_constraint)
+                # upgrade 1 : checking effectivity of modification (ie. the var will be affected)
+                if m.effective():
+                    for new_constraint in self.model.var_to_constraints[m.var]:
+                        if new_constraint != constraint:
+                            woken_constraints.add(new_constraint)
             # applying modifications
             for var in self.model.variables:
                 if not self.append_modification(var.filter_on_card()):
@@ -92,13 +94,11 @@ def solve(model: Model, propagator=None, sgp=None):
     if propagator.propagate():
         modifs = iterate_var_val(model)
         if len(modifs) == 0:
-            if sgp != None:
-                sgp.print_sol()
             return model_truth(model)
         for memento in modifs:
             memento.apply()
             propagator.add_level_of_modification([])
-            if solve(model, propagator):
+            if solve(model, propagator, sgp):
                 return True
             propagator.backtrack()
             memento.revert()
