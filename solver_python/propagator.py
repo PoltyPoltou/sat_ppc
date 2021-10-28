@@ -20,10 +20,12 @@ class Propagator:
         self.modifications[-1].extend(new_modifs)
         return feasable
 
-    def propagate(self):
+    def propagate(self, nb_iter=-1):
         woken_constraints = set(self.model.constraints)
+        if nb_iter < 0:
+            nb_iter = self.propagate_loops
         i = -1
-        while len(woken_constraints) != 0 and i < self.propagate_loops:
+        while len(woken_constraints) != 0 and i < nb_iter:
             i += 1
         # upgrade 2 : checking first for false model
         # checking feasability
