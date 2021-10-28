@@ -23,6 +23,10 @@ class Model:
         for var in self.variables:
             if not var.feasable():
                 return False
+        # upgrade 3 : checking failure of constraints too
+        for c in self.constraints:
+            if c.failure():
+                return False
         return True
 
     def model_truth(self):
