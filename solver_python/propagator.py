@@ -21,18 +21,22 @@ class Propagator:
         return feasable
 
     def propagate(self):
-        # checking first for false model
-        if not self.model.feasable():
-            return False
         woken_constraints = set(self.model.constraints)
-        i = 0
+        i = -1
         while len(woken_constraints) != 0 and i < self.propagate_loops:
             i += 1
+        # upgrade 2 : checking first for false model
+        # checking feasability
+            if i % self.loops_backtrack == 0:
+                feasable_status = self.model.feasable()
+                if not feasable_status[0]:
+                    return feasable_status
             constraint = woken_constraints.pop()
             mementos = constraint.filter()
 
             if not self.append_modification(mementos):
-                return False  #  modifications made one var impossible thus we return False
+                #  modifications made one var impossible thus we return False
+                return False, "Var unsat_m"
 
             # waking up constraints
             for m in mementos:
@@ -41,15 +45,12 @@ class Propagator:
                     for new_constraint in self.model.var_to_constraints[m.var]:
                         if new_constraint != constraint:
                             woken_constraints.add(new_constraint)
-        # checking feasability
-            if i % self.loops_backtrack == 0:
-                if not self.model.feasable():
-                    return False
             # applying modifications
             for var in self.model.variables:
                 if not self.append_modification(var.filter_on_card()):
-                    return False  #  modifications made one var impossible thus we return False
-        return True
+                    #  modifications made one var impossible thus we return False
+                    return False, "Var unsat card"
+        return True, ""
 
     def backtrack(self):
         modif_to_revert: list[Memento] = self.modifications.pop()
