@@ -1,7 +1,9 @@
 from set_var import Set_var
 from memento import *
 from constraint import EmptyIntersection, Intersection
-from solver import *
+from solver import solve
+from model import Model
+from propagator import Propagator
 
 
 def test_set_var():

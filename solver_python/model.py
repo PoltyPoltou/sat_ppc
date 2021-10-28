@@ -2,7 +2,34 @@ import numpy as np
 from constraint import *
 
 from set_var import Set_var
-from solver import Model
+
+
+class Model:
+    def __init__(self) -> None:
+        self.constraints: set(Constraint) = set()
+        self.variables: set(Set_var) = set()
+        self.var_to_constraints = {}
+
+    def add_constraint(self, cons: Constraint):
+        self.constraints.add(cons)
+        for var in cons.get_vars():
+            self.variables.add(var)
+            if var not in self.var_to_constraints.keys():
+                self.var_to_constraints[var] = []
+        for var in cons.get_vars():
+            self.var_to_constraints[var].append(cons)
+
+    def feasable(self):
+        for var in self.variables:
+            if not var.feasable():
+                return False
+        return True
+
+    def model_truth(self):
+        for c in self.constraints:
+            if not c.satisfied():
+                return False
+        return True
 
 
 class Sgp:
