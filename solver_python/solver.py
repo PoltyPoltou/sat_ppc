@@ -16,10 +16,13 @@ def solve(model: Model, propagator=None, sgp=None, tree: TreeNode = Tree()):
     if propagator == None:
         # init of solving
         propagator = Propagator(model)
-    if propagator.propagate():
+    propagate_infos = propagator.propagate()
+    if propagate_infos[0]:
         modifs = iterate_var_val(model)
         if len(modifs) == 0:
-            return model.model_truth()
+            valid = model.model_truth()
+            tree.add_child(name="EOF" + str(valid))
+            return valid
         for memento in modifs:
             memento.apply()
             propagator.add_level_of_modification([])
@@ -27,4 +30,7 @@ def solve(model: Model, propagator=None, sgp=None, tree: TreeNode = Tree()):
                 return True
             propagator.backtrack()
             memento.revert()
+    else:
+        tree.add_child(name=propagate_infos[1])
+
     return False
