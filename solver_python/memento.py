@@ -36,6 +36,12 @@ class LB_memento(Memento):
     def effective(self) -> bool:
         return len(self.to_add) > 0
 
+    def __str__(self) -> str:
+        if self.var.name != "":
+            return str(self.to_add) + " \u2208 " + self.var.name
+        else:
+            return str(self.to_add) + " \u2208 " + str(self.var)
+
 
 class UB_memento(Memento):
     def __init__(self, var, to_remove: set[int]) -> None:
@@ -58,6 +64,12 @@ class UB_memento(Memento):
 
     def effective(self) -> bool:
         return len(self.to_remove) > 0
+
+    def __str__(self) -> str:
+        if self.var.name != "":
+            return str(self.to_remove) + " \u2209 " + self.var.name
+        else:
+            return str(self.to_remove) + " \u2209 " + str(self.var)
 
 
 class Card_memento(Memento):
