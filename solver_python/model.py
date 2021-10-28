@@ -8,12 +8,17 @@ class Model:
     def __init__(self) -> None:
         self.constraints: set(Constraint) = set()
         self.variables: set(Set_var) = set()
+        self.var_priority_dict = {}
         self.var_to_constraints = {}
 
     def add_constraint(self, cons: Constraint):
         self.constraints.add(cons)
         for var in cons.get_vars():
-            self.variables.add(var)
+            if var not in self.variables:
+                self.variables.add(var)
+                if var.priority not in self.var_priority_dict:
+                    self.var_priority_dict[var.priority] = []
+                self.var_priority_dict[var.priority].append(var)
             if var not in self.var_to_constraints.keys():
                 self.var_to_constraints[var] = []
         for var in cons.get_vars():
@@ -49,7 +54,7 @@ class Sgp:
         for w in range(len(self.schedule)):
             for g in range(len(self.schedule[w])):
                 self.schedule[w, g] = Set_var(
-                    [], list(range(self.n)), (self.size, self.size), "s[{},{}]".format(w, g))
+                    [], list(range(self.n)), (self.size, self.size), "s[{},{}]".format(w, g), 1)
 
     def init_schedule_first_week(self):
         self.schedule = np.empty((self.weeks, self.groups), Set_var)
