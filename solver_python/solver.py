@@ -1,6 +1,5 @@
-import set_var
-import constraint
-from memento import LB_memento, Memento, UB_memento
+from ete3.coretype.tree import Tree, TreeNode
+from memento import LB_memento, UB_memento
 from model import Model
 from propagator import Propagator
 
@@ -13,7 +12,7 @@ def iterate_var_val(model: Model):
     return []
 
 
-def solve(model: Model, propagator=None, sgp=None):
+def solve(model: Model, propagator=None, sgp=None, tree: TreeNode = Tree()):
     if propagator == None:
         # init of solving
         propagator = Propagator(model)
@@ -24,7 +23,7 @@ def solve(model: Model, propagator=None, sgp=None):
         for memento in modifs:
             memento.apply()
             propagator.add_level_of_modification([])
-            if solve(model, propagator, sgp):
+            if solve(model, propagator, sgp, tree.add_child(name=str(memento))):
                 return True
             propagator.backtrack()
             memento.revert()
