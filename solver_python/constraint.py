@@ -15,6 +15,9 @@ class Constraint:
     def satisfied(self) -> bool:
         raise NotImplementedError()
 
+    def failure(self) -> bool:
+        raise NotImplementedError()
+
 
 class EmptyIntersection(Constraint):
     def __init__(self, F: Set_var, G: Set_var) -> None:
@@ -39,6 +42,9 @@ class EmptyIntersection(Constraint):
 
     def satisfied(self) -> bool:
         return self.F.ub.isdisjoint(self.G.ub)
+
+    def failure(self) -> bool:
+        return not self.F.lb.isdisjoint(self.G.lb)
 
 
 class Intersection(Constraint):
@@ -78,6 +84,9 @@ class Intersection(Constraint):
 
     def satisfied(self) -> bool:
         return self.H.defined() and self.F.ub & self.G.ub == self.H.lb
+
+    def failure(self) -> bool:
+        return not self.H.ub.issuperset(self.F.lb & self.G.lb)
 
 
 class MaxCardinalConstraint(Constraint):
