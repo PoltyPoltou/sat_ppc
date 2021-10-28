@@ -3,11 +3,12 @@ from memento import Card_memento, LB_memento, Memento, UB_memento
 
 class Set_var:
 
-    def __init__(self, lb: list[int], ub: list[int], card_bounds: tuple[int, int], name="") -> None:
+    def __init__(self, lb: list[int], ub: list[int], card_bounds: tuple[int, int], name="", priority=0) -> None:
         self.lb: set[int] = set(lb)
         self.ub: set[int] = set(ub)
         self.card_bounds = card_bounds
         self.name = name
+        self.priority = priority
 
     def check_bounds(self):
         return self.card_bounds[0] <= self.card_bounds[1] and len(self.ub) >= self.card_bounds[0] and len(self.lb) <= self.card_bounds[1]
