@@ -19,15 +19,15 @@ class Model:
         for var in cons.get_vars():
             self.var_to_constraints[var].append(cons)
 
-    def feasable(self):
+    def feasable(self) -> tuple[bool, str]:
         for var in self.variables:
             if not var.feasable():
-                return False
+                return False, "Var unsat"
         # upgrade 3 : checking failure of constraints too
         for c in self.constraints:
             if c.failure():
-                return False
-        return True
+                return False, "Constraint Fail"
+        return True, ""
 
     def model_truth(self):
         for c in self.constraints:
