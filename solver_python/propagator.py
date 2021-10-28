@@ -47,7 +47,7 @@ class Propagator:
                     for new_constraint in self.model.var_to_constraints[m.var]:
                         if new_constraint != constraint:
                             woken_constraints.add(new_constraint)
-            # applying modifications
+            # applying card filtering
             for var in self.model.variables:
                 if not self.append_modification(var.filter_on_card()):
                     #  modifications made one var impossible thus we return False
