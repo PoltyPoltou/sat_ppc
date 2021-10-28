@@ -65,7 +65,18 @@ class Sgp:
                         range(g*self.size, (g+1)*self.size), range(g*self.size, (g+1)*self.size), (self.size, self.size))
                 else:
                     self.schedule[w, g] = Set_var(
-                        [], list(range(self.n)), (self.size, self.size), "s[{},{}]".format(w, g))
+                        [], list(range(self.n)), (self.size, self.size), "s[{},{}]".format(w, g), 1)
+
+    def init_schedule_all_week(self):
+        self.schedule = np.empty((self.weeks, self.groups), Set_var)
+        for w in range(len(self.schedule)):
+            for g in range(len(self.schedule[w])):
+                if w == 0:
+                    self.schedule[w, g] = Set_var(
+                        range(g*self.size, (g+1)*self.size), range(g*self.size, (g+1)*self.size), (self.size, self.size))
+                else:
+                    self.schedule[w, g] = Set_var(
+                        [i for i in range(self.size) if i % self.groups == g], list(range(self.n)), (self.size, self.size), "s[{},{}]".format(w, g), 1)
 
     def model_sgp(self):
         model = Model()
@@ -91,6 +102,10 @@ class Sgp:
 
     def first_week_model(self):
         self.init_schedule_first_week()
+        return self.model_sgp()
+
+    def all_week_model(self):
+        self.init_schedule_all_week()
         return self.model_sgp()
 
     def print_sol(self):
