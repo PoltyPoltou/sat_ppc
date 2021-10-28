@@ -70,7 +70,8 @@ class Sgp:
             for w2 in range(w1):
                 for g1 in range(self.groups):
                     for g2 in range(self.groups):
-                        H = Set_var([], list(range(self.n)), (0, 1))
+                        H = Set_var([], list(range(self.n)), (0, 1),
+                                    "[{},{}]\u2229[{},{}]".format(w1, g1, w2, g2))
                         model.add_constraint(Intersection(
                             self.schedule[w1, g1], self.schedule[w2, g2], H))
         return model
