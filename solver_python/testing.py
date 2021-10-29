@@ -131,7 +131,7 @@ def test_intersect():
 
 def test_model():
     m = Model()
-    f = Set_var([1], [1, 2, 3], (0, 2))
+    f = Set_var([1], [1, 2, 3], (0, 2), priority=1)
     g = Set_var([2], [1, 2, 3], (0, 2))
     c = EmptyIntersection(f, g)
     m.add_constraint(c)
@@ -139,6 +139,8 @@ def test_model():
     assert m.variables == set(c.get_vars())
     assert m.var_to_constraints[f] == [c]
     assert m.var_to_constraints[g] == [c]
+    assert m.var_priority_dict[1] == [f]
+    assert m.var_priority_dict[0] == [g]
 
 
 def test_propagator():
