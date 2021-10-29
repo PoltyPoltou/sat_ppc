@@ -5,6 +5,12 @@ from propagator import Propagator
 
 
 def iterate_var_val(model: Model):
+    # upgrade 4 having prioritized variables
+    priority_var = model.var_priority_dict[max(model.var_priority_dict.keys())]
+    for var in priority_var:
+        if var.feasable() and not var.defined():
+            value = next(iter(var.ub-var.lb))
+            return [LB_memento(var, {value}), UB_memento(var, {value})]
     for var in model.variables:
         if var.feasable() and not var.defined():
             value = next(iter(var.ub-var.lb))
