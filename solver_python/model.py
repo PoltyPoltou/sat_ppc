@@ -16,7 +16,7 @@ class Model:
         for var in cons.get_vars():
             if var not in self.variables:
                 self.variables.add(var)
-                if var.priority not in self.var_priority_dict:
+                if var.priority not in self.var_priority_dict.keys():
                     self.var_priority_dict[var.priority] = []
                 self.var_priority_dict[var.priority].append(var)
             if var not in self.var_to_constraints.keys():
