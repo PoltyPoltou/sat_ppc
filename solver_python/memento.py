@@ -77,6 +77,7 @@ class Card_memento(Memento):
         self.var = var
         self.new_card = new_card
         self.old_card = None
+        self.applied_card = None
         self.applied = False
         self.valid = True
 
@@ -84,6 +85,7 @@ class Card_memento(Memento):
         if not self.applied:
             self.old_card = self.var.card_bounds
             self.valid = self.valid & self.var.change_card_tuple(self.new_card)
+            self.applied_card = self.var.card_bounds
             self.applied = True
 
     def revert(self) -> None:
@@ -94,3 +96,9 @@ class Card_memento(Memento):
 
     def effective(self) -> bool:
         return self.new_card[0] > self.var.card_bounds[0] or self.new_card[1] < self.var.card_bounds[1]
+
+    def __str__(self) -> str:
+        if self.var.name != "":
+            return str(self.old_card) + "->" + str(self.applied_card) + self.var.name
+        else:
+            return str(self.old_card) + "->" + str(self.applied_card) + str(self.var)

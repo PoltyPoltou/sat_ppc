@@ -108,6 +108,14 @@ class Sgp:
         self.init_schedule_all_week()
         return self.model_sgp()
 
+    def get_week_str(self, w):
+        string = "|"
+        for g in range(len(self.schedule[w])):
+            for golfer in self.schedule[w, g].lb:
+                string += "{:<2}".format(golfer) + " "
+            string += "|"
+        return string
+
     def print_sol(self):
         for w in range(len(self.schedule)):
             print("", end="| ")

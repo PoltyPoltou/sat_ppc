@@ -14,11 +14,14 @@ class Propagator:
 
     def append_modification(self, new_modifs):
         feasable = True
+        faulty_memento = None
         for m in new_modifs:
             m.apply()
-            feasable = feasable and m.valid
+            if feasable and not m.valid:
+                faulty_memento = m
+                feasable = False
         self.modifications[-1].extend(new_modifs)
-        return feasable
+        return feasable, faulty_memento
 
     def propagate(self, nb_iter=-1):
         woken_constraints = set(self.model.constraints)
@@ -35,10 +38,10 @@ class Propagator:
                     return feasable_status
             constraint = woken_constraints.pop()
             mementos = constraint.filter()
-
-            if not self.append_modification(mementos):
+            modif_infos = self.append_modification(mementos)
+            if not modif_infos[0]:
                 #  modifications made one var impossible thus we return False
-                return False, "Var unsat_m"
+                return False, "Var unsat" + str(modif_infos[1])
 
             # waking up constraints
             for m in mementos:
