@@ -1,5 +1,4 @@
 import multiprocessing
-from contextlib import redirect_stdout
 import sys
 import itertools
 from time import sleep, time
@@ -355,7 +354,7 @@ def order_week_latch(sgp_pb: SGP):
     return latch_week_list
 
 
-def solver(groups, size, weeks, f=sys.stdout):
+def solve(groups, size, weeks, f=sys.stdout):
     pb = SGP(groups, size, weeks)
     start_model = time()
     # symmetry breaking
@@ -391,7 +390,7 @@ def solver(groups, size, weeks, f=sys.stdout):
 def benchmark(name, g, s, weeks):
     with open("./sat/{}_{}-{}.txt".format(name, g, s), "x") as f:
         for w in weeks:
-            solver(g, s, w, f)
+            solve(g, s, w, f)
             f.flush()
 
 
@@ -405,7 +404,7 @@ def bench_core(name, g, s, weeks):
 if __name__ == "__main__":
 
     if len(sys.argv) == 4:
-        solver(int(sys.argv[1]), int(sys.argv[2]), int(sys.argv[3]))
+        solve(int(sys.argv[1]), int(sys.argv[2]), int(sys.argv[3]))
     elif len(sys.argv) == 3 and sys.argv[1] == "bench":
         name = sys.argv[2]
         th = bench_core(name, 5, 3, range(1, 12))
