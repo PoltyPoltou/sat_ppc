@@ -1,0 +1,307 @@
+Sat Oct 30 19:40:35 2021    stats.txt
+
+         57174286 function calls (57173783 primitive calls) in 15.996 seconds
+
+   Ordered by: cumulative time
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.000    0.000    0.000    0.000 /home/polty/document/M2ORO/ppc_sat/solver_python/propagator.py:6(__init__)
+        1    0.000    0.000    0.000    0.000 /home/polty/document/M2ORO/ppc_sat/solver_python/model.py:8(__init__)
+        1    0.000    0.000    0.000    0.000 {method 'disable' of '_lsprof.Profiler' objects}
+        1    0.000    0.000    0.000    0.000 /home/polty/.local/lib/python3.9/site-packages/numpy/core/_internal.py:863(npy_ctypes_check)
+        1    0.000    0.000    0.000    0.000 /home/polty/document/M2ORO/ppc_sat/solver_python/model.py:45(__init__)
+        4    0.000    0.000    0.000    0.000 {built-in method time.time}
+        1    0.000    0.000    0.000    0.000 /home/polty/.local/lib/python3.9/site-packages/ete3/coretype/tree.py:665(traverse)
+       10    0.000    0.000    0.000    0.000 /home/polty/document/M2ORO/ppc_sat/solver_python/model.py:79(<listcomp>)
+       30    0.000    0.000    0.000    0.000 /home/polty/document/M2ORO/ppc_sat/solver_python/constraint.py:23(__init__)
+       60    0.000    0.000    0.000    0.000 /home/polty/document/M2ORO/ppc_sat/solver_python/constraint.py:27(get_vars)
+        1    0.000    0.000    0.000    0.000 {built-in method numpy.empty}
+       30    0.000    0.000    0.000    0.000 /home/polty/document/M2ORO/ppc_sat/solver_python/constraint.py:43(satisfied)
+       75    0.000    0.000    0.000    0.000 /home/polty/document/M2ORO/ppc_sat/solver_python/constraint.py:51(__init__)
+      150    0.000    0.000    0.000    0.000 /home/polty/document/M2ORO/ppc_sat/solver_python/constraint.py:56(get_vars)
+      504    0.000    0.000    0.000    0.000 {built-in method builtins.isinstance}
+      504    0.000    0.000    0.000    0.000 {method 'setdefault' of 'dict' objects}
+       90    0.000    0.000    0.000    0.000 {method 'format' of 'str' objects}
+      504    0.000    0.000    0.000    0.000 {built-in method builtins.hasattr}
+      260    0.000    0.000    0.000    0.000 {built-in method builtins.next}
+      748    0.000    0.000    0.000    0.000 {method 'popleft' of 'collections.deque' objects}
+      260    0.000    0.000    0.000    0.000 {built-in method builtins.iter}
+        1    0.000    0.000    0.000    0.000 /home/polty/document/M2ORO/ppc_sat/solver_python/model.py:70(init_schedule_all_week)
+      504    0.000    0.000    0.000    0.000 {built-in method builtins.getattr}
+       90    0.000    0.000    0.000    0.000 /home/polty/document/M2ORO/ppc_sat/solver_python/set_var.py:12(__init__)
+      473    0.000    0.000    0.000    0.000 {method 'pop' of 'list' objects}
+      748    0.000    0.000    0.000    0.000 {method 'extend' of 'collections.deque' objects}
+       75    0.000    0.000    0.000    0.000 /home/polty/document/M2ORO/ppc_sat/solver_python/constraint.py:85(satisfied)
+      636    0.000    0.000    0.000    0.000 {method 'keys' of 'dict' objects}
+     1008    0.000    0.000    0.000    0.000 /home/polty/.local/lib/python3.9/site-packages/ete3/treeview/main.py:127(__init__)
+        1    0.000    0.000    0.000    0.000 /home/polty/document/M2ORO/ppc_sat/solver_python/model.py:37(model_truth)
+      503    0.000    0.000    0.000    0.000 /home/polty/document/M2ORO/ppc_sat/solver_python/propagator.py:12(add_level_of_modification)
+     1008    0.000    0.000    0.000    0.000 /home/polty/.local/lib/python3.9/site-packages/ete3/treeview/main.py:98(__init__)
+      748    0.000    0.000    0.000    0.000 {method 'update' of 'set' objects}
+      504    0.000    0.000    0.000    0.000 /home/polty/.local/lib/python3.9/site-packages/ete3/treeview/main.py:581(add_face)
+     2243    0.000    0.000    0.000    0.000 /home/polty/.local/lib/python3.9/site-packages/ete3/coretype/tree.py:146(_get_children)
+      747    0.000    0.000    0.000    0.000 /home/polty/.local/lib/python3.9/site-packages/ete3/coretype/tree.py:140(_set_up)
+      748    0.000    0.000    0.000    0.000 /home/polty/.local/lib/python3.9/site-packages/ete3/coretype/tree.py:973(is_leaf)
+      105    0.000    0.000    0.000    0.000 /home/polty/document/M2ORO/ppc_sat/solver_python/model.py:14(add_constraint)
+      243    0.000    0.000    0.000    0.000 /home/polty/document/M2ORO/ppc_sat/solver_python/memento.py:68(__str__)
+        1    0.000    0.000    0.001    0.001 /home/polty/document/M2ORO/ppc_sat/solver_python/model.py:81(model_sgp)
+        1    0.000    0.000    0.001    0.001 /home/polty/document/M2ORO/ppc_sat/solver_python/model.py:107(all_week_model)
+      749    0.000    0.000    0.001    0.000 /home/polty/.local/lib/python3.9/site-packages/ete3/coretype/tree.py:740(_iter_descendants_levelorder)
+     3024    0.001    0.000    0.001    0.000 /home/polty/.local/lib/python3.9/site-packages/ete3/treeview/main.py:565(__setattr__)
+      504    0.001    0.000    0.001    0.000 /home/polty/.local/lib/python3.9/site-packages/ete3/treeview/faces.py:195(__init__)
+    10262    0.001    0.000    0.001    0.000 {method 'remove' of 'set' objects}
+      504    0.000    0.000    0.001    0.000 /home/polty/.local/lib/python3.9/site-packages/ete3/treeview/faces.py:259(__init__)
+     3024    0.000    0.000    0.001    0.000 {built-in method builtins.setattr}
+      748    0.001    0.000    0.002    0.000 /home/polty/.local/lib/python3.9/site-packages/ete3/coretype/tree.py:192(__init__)
+     4554    0.001    0.000    0.002    0.000 /home/polty/document/M2ORO/ppc_sat/solver_python/set_var.py:56(add_to_ub)
+      404    0.002    0.000    0.002    0.000 /home/polty/document/M2ORO/ppc_sat/solver_python/memento.py:39(__str__)
+     1360    0.001    0.000    0.002    0.000 /home/polty/document/M2ORO/ppc_sat/solver_python/set_var.py:115(defined)
+      504    0.001    0.000    0.002    0.000 /home/polty/.local/lib/python3.9/site-packages/ete3/treeview/main.py:561(__init__)
+    10925    0.002    0.000    0.002    0.000 /home/polty/document/M2ORO/ppc_sat/solver_python/set_var.py:48(remove_from_lb)
+    21528    0.002    0.000    0.002    0.000 {method 'add' of 'set' objects}
+      504    0.001    0.000    0.003    0.000 /home/polty/.local/lib/python3.9/site-packages/ete3/coretype/tree.py:2462(add_face)
+      747    0.001    0.000    0.003    0.000 /home/polty/.local/lib/python3.9/site-packages/ete3/coretype/tree.py:295(add_child)
+    42017    0.004    0.000    0.004    0.000 {method 'pop' of 'set' objects}
+      261    0.001    0.000    0.005    0.000 /home/polty/document/M2ORO/ppc_sat/solver_python/solver.py:7(iterate_var_val)
+     5754    0.003    0.000    0.007    0.000 /home/polty/document/M2ORO/ppc_sat/solver_python/set_var.py:39(remove_from_ub)
+    11748    0.006    0.000    0.013    0.000 /home/polty/document/M2ORO/ppc_sat/solver_python/set_var.py:31(add_to_lb)
+    84437    0.018    0.000    0.021    0.000 /home/polty/document/M2ORO/ppc_sat/solver_python/memento.py:30(revert)
+    88329    0.017    0.000    0.021    0.000 /home/polty/document/M2ORO/ppc_sat/solver_python/memento.py:36(effective)
+   297101    0.022    0.000    0.022    0.000 {method 'append' of 'list' objects}
+   104486    0.021    0.000    0.022    0.000 /home/polty/document/M2ORO/ppc_sat/solver_python/memento.py:59(revert)
+    88329    0.023    0.000    0.023    0.000 /home/polty/document/M2ORO/ppc_sat/solver_python/memento.py:97(effective)
+   113189    0.020    0.000    0.025    0.000 /home/polty/document/M2ORO/ppc_sat/solver_python/memento.py:65(effective)
+    12430    0.018    0.000    0.027    0.000 /home/polty/document/M2ORO/ppc_sat/solver_python/constraint.py:30(filter)
+   114365    0.024    0.000    0.031    0.000 /home/polty/document/M2ORO/ppc_sat/solver_python/memento.py:53(apply)
+   422633    0.037    0.000    0.037    0.000 {method 'isdisjoint' of 'set' objects}
+    92349    0.027    0.000    0.040    0.000 /home/polty/document/M2ORO/ppc_sat/solver_python/memento.py:24(apply)
+    92349    0.049    0.000    0.049    0.000 /home/polty/document/M2ORO/ppc_sat/solver_python/memento.py:18(__init__)
+   114382    0.058    0.000    0.058    0.000 /home/polty/document/M2ORO/ppc_sat/solver_python/memento.py:47(__init__)
+  1058960    0.071    0.000    0.071    0.000 {method 'issuperset' of 'set' objects}
+  1277955    0.092    0.000    0.092    0.000 {method 'issubset' of 'set' objects}
+  1691037    0.119    0.000    0.119    0.000 /home/polty/document/M2ORO/ppc_sat/solver_python/set_var.py:84(set_card)
+   422603    0.087    0.000    0.124    0.000 /home/polty/document/M2ORO/ppc_sat/solver_python/constraint.py:46(failure)
+  3810587    0.201    0.000    0.201    0.000 {method 'extend' of 'list' objects}
+  1884364    0.255    0.000    0.255    0.000 {built-in method builtins.min}
+  1277955    0.222    0.000    0.314    0.000 /home/polty/document/M2ORO/ppc_sat/solver_python/set_var.py:25(check_sets)
+  1058960    0.329    0.000    0.399    0.000 /home/polty/document/M2ORO/ppc_sat/solver_python/constraint.py:88(failure)
+  1855038    0.481    0.000    0.481    0.000 {built-in method builtins.max}
+    29587    0.357    0.000    0.536    0.000 /home/polty/document/M2ORO/ppc_sat/solver_python/constraint.py:59(filter)
+  1691037    0.504    0.000    0.623    0.000 /home/polty/document/M2ORO/ppc_sat/solver_python/memento.py:91(revert)
+  1854777    0.881    0.000    0.881    0.000 /home/polty/document/M2ORO/ppc_sat/solver_python/memento.py:76(__init__)
+ 19916969    0.896    0.000    0.896    0.000 {built-in method builtins.len}
+      473    0.283    0.001    0.949    0.002 /home/polty/document/M2ORO/ppc_sat/solver_python/propagator.py:60(backtrack)
+  1277955    0.378    0.000    1.253    0.000 /home/polty/document/M2ORO/ppc_sat/solver_python/set_var.py:121(feasible)
+  3150234    1.144    0.000    1.430    0.000 /home/polty/document/M2ORO/ppc_sat/solver_python/set_var.py:19(check_bounds)
+    14173    0.403    0.000    2.176    0.000 /home/polty/document/M2ORO/ppc_sat/solver_python/model.py:27(feasible)
+  1854777    1.049    0.000    2.639    0.000 /home/polty/document/M2ORO/ppc_sat/solver_python/set_var.py:71(change_card)
+  1854777    0.419    0.000    3.058    0.000 /home/polty/document/M2ORO/ppc_sat/solver_python/set_var.py:63(change_card_tuple)
+  1854777    0.834    0.000    3.892    0.000 /home/polty/document/M2ORO/ppc_sat/solver_python/memento.py:84(apply)
+  3768570    2.486    0.000    3.913    0.000 /home/polty/document/M2ORO/ppc_sat/solver_python/set_var.py:90(filter_on_card)
+  3810587    2.621    0.000    6.785    0.000 /home/polty/document/M2ORO/ppc_sat/solver_python/propagator.py:15(append_modification)
+      504    1.408    0.003   14.921    0.030 /home/polty/document/M2ORO/ppc_sat/solver_python/propagator.py:26(propagate)
+    504/1    0.092    0.000   15.974   15.974 /home/polty/document/M2ORO/ppc_sat/solver_python/solver.py:21(solve)
+        1    0.016    0.016   15.996   15.996 /home/polty/document/M2ORO/ppc_sat/solver_python/main.py:14(solve)
+        1    0.000    0.000   15.996   15.996 <string>:1(<module>)
+        1    0.000    0.000   15.996   15.996 {built-in method builtins.exec}
+
+
+   Ordered by: cumulative time
+
+Function                                                                                                called...
+                                                                                                            ncalls  tottime  cumtime
+/home/polty/document/M2ORO/ppc_sat/solver_python/propagator.py:6(__init__)                              -> 
+/home/polty/document/M2ORO/ppc_sat/solver_python/model.py:8(__init__)                                   -> 
+{method 'disable' of '_lsprof.Profiler' objects}                                                        -> 
+/home/polty/.local/lib/python3.9/site-packages/numpy/core/_internal.py:863(npy_ctypes_check)            -> 
+/home/polty/document/M2ORO/ppc_sat/solver_python/model.py:45(__init__)                                  -> 
+{built-in method time.time}                                                                             -> 
+/home/polty/.local/lib/python3.9/site-packages/ete3/coretype/tree.py:665(traverse)                      -> 
+/home/polty/document/M2ORO/ppc_sat/solver_python/model.py:79(<listcomp>)                                -> 
+/home/polty/document/M2ORO/ppc_sat/solver_python/constraint.py:23(__init__)                             -> 
+/home/polty/document/M2ORO/ppc_sat/solver_python/constraint.py:27(get_vars)                             -> 
+{built-in method numpy.empty}                                                                           ->       1    0.000    0.000  /home/polty/.local/lib/python3.9/site-packages/numpy/core/_internal.py:863(npy_ctypes_check)
+/home/polty/document/M2ORO/ppc_sat/solver_python/constraint.py:43(satisfied)                            ->      30    0.000    0.000  {method 'isdisjoint' of 'set' objects}
+/home/polty/document/M2ORO/ppc_sat/solver_python/constraint.py:51(__init__)                             -> 
+/home/polty/document/M2ORO/ppc_sat/solver_python/constraint.py:56(get_vars)                             -> 
+{built-in method builtins.isinstance}                                                                   -> 
+{method 'setdefault' of 'dict' objects}                                                                 -> 
+{method 'format' of 'str' objects}                                                                      -> 
+{built-in method builtins.hasattr}                                                                      -> 
+{built-in method builtins.next}                                                                         -> 
+{method 'popleft' of 'collections.deque' objects}                                                       -> 
+{built-in method builtins.iter}                                                                         -> 
+/home/polty/document/M2ORO/ppc_sat/solver_python/model.py:70(init_schedule_all_week)                    ->      10    0.000    0.000  /home/polty/document/M2ORO/ppc_sat/solver_python/model.py:79(<listcomp>)
+                                                                                                                15    0.000    0.000  /home/polty/document/M2ORO/ppc_sat/solver_python/set_var.py:12(__init__)
+                                                                                                                 4    0.000    0.000  {built-in method builtins.len}
+                                                                                                                 1    0.000    0.000  {built-in method numpy.empty}
+                                                                                                                15    0.000    0.000  {method 'format' of 'str' objects}
+{built-in method builtins.getattr}                                                                      -> 
+/home/polty/document/M2ORO/ppc_sat/solver_python/set_var.py:12(__init__)                                -> 
+{method 'pop' of 'list' objects}                                                                        -> 
+{method 'extend' of 'collections.deque' objects}                                                        -> 
+/home/polty/document/M2ORO/ppc_sat/solver_python/constraint.py:85(satisfied)                            ->      75    0.000    0.000  /home/polty/document/M2ORO/ppc_sat/solver_python/set_var.py:115(defined)
+{method 'keys' of 'dict' objects}                                                                       -> 
+/home/polty/.local/lib/python3.9/site-packages/ete3/treeview/main.py:127(__init__)                      -> 
+/home/polty/document/M2ORO/ppc_sat/solver_python/model.py:37(model_truth)                               ->      30    0.000    0.000  /home/polty/document/M2ORO/ppc_sat/solver_python/constraint.py:43(satisfied)
+                                                                                                                75    0.000    0.000  /home/polty/document/M2ORO/ppc_sat/solver_python/constraint.py:85(satisfied)
+/home/polty/document/M2ORO/ppc_sat/solver_python/propagator.py:12(add_level_of_modification)            ->     503    0.000    0.000  {method 'append' of 'list' objects}
+/home/polty/.local/lib/python3.9/site-packages/ete3/treeview/main.py:98(__init__)                       -> 
+{method 'update' of 'set' objects}                                                                      -> 
+/home/polty/.local/lib/python3.9/site-packages/ete3/treeview/main.py:581(add_face)                      ->     504    0.000    0.000  {method 'append' of 'list' objects}
+                                                                                                               504    0.000    0.000  {method 'setdefault' of 'dict' objects}
+/home/polty/.local/lib/python3.9/site-packages/ete3/coretype/tree.py:146(_get_children)                 -> 
+/home/polty/.local/lib/python3.9/site-packages/ete3/coretype/tree.py:140(_set_up)                       -> 
+/home/polty/.local/lib/python3.9/site-packages/ete3/coretype/tree.py:973(is_leaf)                       ->     748    0.000    0.000  /home/polty/.local/lib/python3.9/site-packages/ete3/coretype/tree.py:146(_get_children)
+                                                                                                               748    0.000    0.000  {built-in method builtins.len}
+/home/polty/document/M2ORO/ppc_sat/solver_python/model.py:14(add_constraint)                            ->      60    0.000    0.000  /home/polty/document/M2ORO/ppc_sat/solver_python/constraint.py:27(get_vars)
+                                                                                                               150    0.000    0.000  /home/polty/document/M2ORO/ppc_sat/solver_python/constraint.py:56(get_vars)
+                                                                                                               195    0.000    0.000  {method 'add' of 'set' objects}
+                                                                                                               375    0.000    0.000  {method 'append' of 'list' objects}
+                                                                                                               375    0.000    0.000  {method 'keys' of 'dict' objects}
+/home/polty/document/M2ORO/ppc_sat/solver_python/memento.py:68(__str__)                                 -> 
+/home/polty/document/M2ORO/ppc_sat/solver_python/model.py:81(model_sgp)                                 ->      30    0.000    0.000  /home/polty/document/M2ORO/ppc_sat/solver_python/constraint.py:23(__init__)
+                                                                                                                75    0.000    0.000  /home/polty/document/M2ORO/ppc_sat/solver_python/constraint.py:51(__init__)
+                                                                                                                 1    0.000    0.000  /home/polty/document/M2ORO/ppc_sat/solver_python/model.py:8(__init__)
+                                                                                                               105    0.000    0.000  /home/polty/document/M2ORO/ppc_sat/solver_python/model.py:14(add_constraint)
+                                                                                                                75    0.000    0.000  /home/polty/document/M2ORO/ppc_sat/solver_python/set_var.py:12(__init__)
+                                                                                                                75    0.000    0.000  {method 'format' of 'str' objects}
+/home/polty/document/M2ORO/ppc_sat/solver_python/model.py:107(all_week_model)                           ->       1    0.000    0.000  /home/polty/document/M2ORO/ppc_sat/solver_python/model.py:70(init_schedule_all_week)
+                                                                                                                 1    0.000    0.001  /home/polty/document/M2ORO/ppc_sat/solver_python/model.py:81(model_sgp)
+/home/polty/.local/lib/python3.9/site-packages/ete3/coretype/tree.py:740(_iter_descendants_levelorder)  ->     748    0.000    0.000  /home/polty/.local/lib/python3.9/site-packages/ete3/coretype/tree.py:146(_get_children)
+                                                                                                               749    0.000    0.000  {built-in method builtins.len}
+                                                                                                               748    0.000    0.000  {method 'extend' of 'collections.deque' objects}
+                                                                                                               748    0.000    0.000  {method 'popleft' of 'collections.deque' objects}
+/home/polty/.local/lib/python3.9/site-packages/ete3/treeview/main.py:565(__setattr__)                   -> 
+/home/polty/.local/lib/python3.9/site-packages/ete3/treeview/faces.py:195(__init__)                     ->    1008    0.000    0.000  /home/polty/.local/lib/python3.9/site-packages/ete3/treeview/main.py:98(__init__)
+                                                                                                              1008    0.000    0.000  /home/polty/.local/lib/python3.9/site-packages/ete3/treeview/main.py:127(__init__)
+{method 'remove' of 'set' objects}                                                                      -> 
+/home/polty/.local/lib/python3.9/site-packages/ete3/treeview/faces.py:259(__init__)                     ->     504    0.001    0.001  /home/polty/.local/lib/python3.9/site-packages/ete3/treeview/faces.py:195(__init__)
+{built-in method builtins.setattr}                                                                      ->    3024    0.001    0.001  /home/polty/.local/lib/python3.9/site-packages/ete3/treeview/main.py:565(__setattr__)
+/home/polty/.local/lib/python3.9/site-packages/ete3/coretype/tree.py:192(__init__)                      ->     748    0.000    0.000  {method 'update' of 'set' objects}
+/home/polty/document/M2ORO/ppc_sat/solver_python/set_var.py:56(add_to_ub)                               ->    4554    0.001    0.001  {method 'add' of 'set' objects}
+/home/polty/document/M2ORO/ppc_sat/solver_python/memento.py:39(__str__)                                 -> 
+/home/polty/document/M2ORO/ppc_sat/solver_python/set_var.py:115(defined)                                ->    1100    0.000    0.001  /home/polty/document/M2ORO/ppc_sat/solver_python/set_var.py:121(feasible)
+                                                                                                              2720    0.000    0.000  {built-in method builtins.len}
+/home/polty/.local/lib/python3.9/site-packages/ete3/treeview/main.py:561(__init__)                      ->    3024    0.000    0.001  {built-in method builtins.setattr}
+/home/polty/document/M2ORO/ppc_sat/solver_python/set_var.py:48(remove_from_lb)                          ->    4508    0.000    0.000  {method 'remove' of 'set' objects}
+{method 'add' of 'set' objects}                                                                         -> 
+/home/polty/.local/lib/python3.9/site-packages/ete3/coretype/tree.py:2462(add_face)                     ->     504    0.001    0.002  /home/polty/.local/lib/python3.9/site-packages/ete3/treeview/main.py:561(__init__)
+                                                                                                               504    0.000    0.000  /home/polty/.local/lib/python3.9/site-packages/ete3/treeview/main.py:581(add_face)
+                                                                                                               504    0.000    0.000  {built-in method builtins.getattr}
+                                                                                                               504    0.000    0.000  {built-in method builtins.hasattr}
+                                                                                                               504    0.000    0.000  {built-in method builtins.isinstance}
+/home/polty/.local/lib/python3.9/site-packages/ete3/coretype/tree.py:295(add_child)                     ->     747    0.000    0.000  /home/polty/.local/lib/python3.9/site-packages/ete3/coretype/tree.py:140(_set_up)
+                                                                                                               747    0.000    0.000  /home/polty/.local/lib/python3.9/site-packages/ete3/coretype/tree.py:146(_get_children)
+                                                                                                               747    0.001    0.002  /home/polty/.local/lib/python3.9/site-packages/ete3/coretype/tree.py:192(__init__)
+                                                                                                               747    0.000    0.000  {method 'append' of 'list' objects}
+{method 'pop' of 'set' objects}                                                                         -> 
+/home/polty/document/M2ORO/ppc_sat/solver_python/solver.py:7(iterate_var_val)                           ->     260    0.000    0.000  /home/polty/document/M2ORO/ppc_sat/solver_python/memento.py:18(__init__)
+                                                                                                               260    0.000    0.000  /home/polty/document/M2ORO/ppc_sat/solver_python/memento.py:47(__init__)
+                                                                                                              1285    0.001    0.002  /home/polty/document/M2ORO/ppc_sat/solver_python/set_var.py:115(defined)
+                                                                                                              1285    0.000    0.001  /home/polty/document/M2ORO/ppc_sat/solver_python/set_var.py:121(feasible)
+                                                                                                               260    0.000    0.000  {built-in method builtins.iter}
+                                                                                                               261    0.000    0.000  {built-in method builtins.max}
+                                                                                                               260    0.000    0.000  {built-in method builtins.next}
+                                                                                                               261    0.000    0.000  {method 'keys' of 'dict' objects}
+/home/polty/document/M2ORO/ppc_sat/solver_python/set_var.py:39(remove_from_ub)                          ->    5754    0.002    0.003  /home/polty/document/M2ORO/ppc_sat/solver_python/set_var.py:19(check_bounds)
+                                                                                                              5754    0.001    0.001  {method 'remove' of 'set' objects}
+/home/polty/document/M2ORO/ppc_sat/solver_python/set_var.py:31(add_to_lb)                               ->   11748    0.004    0.006  /home/polty/document/M2ORO/ppc_sat/solver_python/set_var.py:19(check_bounds)
+                                                                                                             11748    0.001    0.001  {method 'add' of 'set' objects}
+/home/polty/document/M2ORO/ppc_sat/solver_python/memento.py:30(revert)                                  ->   10925    0.002    0.002  /home/polty/document/M2ORO/ppc_sat/solver_python/set_var.py:48(remove_from_lb)
+/home/polty/document/M2ORO/ppc_sat/solver_python/memento.py:36(effective)                               ->   88329    0.004    0.004  {built-in method builtins.len}
+{method 'append' of 'list' objects}                                                                     -> 
+/home/polty/document/M2ORO/ppc_sat/solver_python/memento.py:59(revert)                                  ->    4554    0.001    0.002  /home/polty/document/M2ORO/ppc_sat/solver_python/set_var.py:56(add_to_ub)
+/home/polty/document/M2ORO/ppc_sat/solver_python/memento.py:97(effective)                               -> 
+/home/polty/document/M2ORO/ppc_sat/solver_python/memento.py:65(effective)                               ->  113189    0.006    0.006  {built-in method builtins.len}
+/home/polty/document/M2ORO/ppc_sat/solver_python/constraint.py:30(filter)                               ->   24860    0.006    0.006  /home/polty/document/M2ORO/ppc_sat/solver_python/memento.py:47(__init__)
+                                                                                                             24860    0.002    0.002  {method 'append' of 'list' objects}
+/home/polty/document/M2ORO/ppc_sat/solver_python/memento.py:53(apply)                                   ->    5754    0.003    0.007  /home/polty/document/M2ORO/ppc_sat/solver_python/set_var.py:39(remove_from_ub)
+{method 'isdisjoint' of 'set' objects}                                                                  -> 
+/home/polty/document/M2ORO/ppc_sat/solver_python/memento.py:24(apply)                                   ->   11748    0.006    0.013  /home/polty/document/M2ORO/ppc_sat/solver_python/set_var.py:31(add_to_lb)
+/home/polty/document/M2ORO/ppc_sat/solver_python/memento.py:18(__init__)                                -> 
+/home/polty/document/M2ORO/ppc_sat/solver_python/memento.py:47(__init__)                                -> 
+{method 'issuperset' of 'set' objects}                                                                  -> 
+{method 'issubset' of 'set' objects}                                                                    -> 
+/home/polty/document/M2ORO/ppc_sat/solver_python/set_var.py:84(set_card)                                -> 
+/home/polty/document/M2ORO/ppc_sat/solver_python/constraint.py:46(failure)                              ->  422603    0.037    0.037  {method 'isdisjoint' of 'set' objects}
+{method 'extend' of 'list' objects}                                                                     -> 
+{built-in method builtins.min}                                                                          -> 
+/home/polty/document/M2ORO/ppc_sat/solver_python/set_var.py:25(check_sets)                              -> 1277955    0.092    0.092  {method 'issubset' of 'set' objects}
+/home/polty/document/M2ORO/ppc_sat/solver_python/constraint.py:88(failure)                              -> 1058960    0.071    0.071  {method 'issuperset' of 'set' objects}
+{built-in method builtins.max}                                                                          -> 
+/home/polty/document/M2ORO/ppc_sat/solver_python/constraint.py:59(filter)                               ->   88761    0.048    0.048  /home/polty/document/M2ORO/ppc_sat/solver_python/memento.py:18(__init__)
+                                                                                                             88761    0.051    0.051  /home/polty/document/M2ORO/ppc_sat/solver_python/memento.py:47(__init__)
+                                                                                                             88761    0.050    0.050  /home/polty/document/M2ORO/ppc_sat/solver_python/memento.py:76(__init__)
+                                                                                                             59174    0.004    0.004  {built-in method builtins.len}
+                                                                                                             29587    0.007    0.007  {built-in method builtins.min}
+                                                                                                            266283    0.019    0.019  {method 'append' of 'list' objects}
+/home/polty/document/M2ORO/ppc_sat/solver_python/memento.py:91(revert)                                  -> 1691037    0.119    0.119  /home/polty/document/M2ORO/ppc_sat/solver_python/set_var.py:84(set_card)
+/home/polty/document/M2ORO/ppc_sat/solver_python/memento.py:76(__init__)                                -> 
+{built-in method builtins.len}                                                                          -> 
+/home/polty/document/M2ORO/ppc_sat/solver_python/propagator.py:60(backtrack)                            ->   84194    0.018    0.020  /home/polty/document/M2ORO/ppc_sat/solver_python/memento.py:30(revert)
+                                                                                                            104256    0.020    0.022  /home/polty/document/M2ORO/ppc_sat/solver_python/memento.py:59(revert)
+                                                                                                           1691037    0.504    0.623  /home/polty/document/M2ORO/ppc_sat/solver_python/memento.py:91(revert)
+                                                                                                               473    0.000    0.000  {built-in method builtins.len}
+                                                                                                               473    0.000    0.000  {method 'pop' of 'list' objects}
+/home/polty/document/M2ORO/ppc_sat/solver_python/set_var.py:121(feasible)                               -> 1277955    0.443    0.560  /home/polty/document/M2ORO/ppc_sat/solver_python/set_var.py:19(check_bounds)
+                                                                                                           1277955    0.222    0.314  /home/polty/document/M2ORO/ppc_sat/solver_python/set_var.py:25(check_sets)
+/home/polty/document/M2ORO/ppc_sat/solver_python/set_var.py:19(check_bounds)                            -> 6300180    0.286    0.286  {built-in method builtins.len}
+/home/polty/document/M2ORO/ppc_sat/solver_python/model.py:27(feasible)                                  ->  422603    0.087    0.124  /home/polty/document/M2ORO/ppc_sat/solver_python/constraint.py:46(failure)
+                                                                                                           1058960    0.329    0.399  /home/polty/document/M2ORO/ppc_sat/solver_python/constraint.py:88(failure)
+                                                                                                           1275570    0.378    1.250  /home/polty/document/M2ORO/ppc_sat/solver_python/set_var.py:121(feasible)
+/home/polty/document/M2ORO/ppc_sat/solver_python/set_var.py:71(change_card)                             -> 1854777    0.694    0.861  /home/polty/document/M2ORO/ppc_sat/solver_python/set_var.py:19(check_bounds)
+                                                                                                           1854777    0.481    0.481  {built-in method builtins.max}
+                                                                                                           1854777    0.248    0.248  {built-in method builtins.min}
+/home/polty/document/M2ORO/ppc_sat/solver_python/set_var.py:63(change_card_tuple)                       -> 1854777    1.049    2.639  /home/polty/document/M2ORO/ppc_sat/solver_python/set_var.py:71(change_card)
+/home/polty/document/M2ORO/ppc_sat/solver_python/memento.py:84(apply)                                   -> 1854777    0.419    3.058  /home/polty/document/M2ORO/ppc_sat/solver_python/set_var.py:63(change_card_tuple)
+/home/polty/document/M2ORO/ppc_sat/solver_python/set_var.py:90(filter_on_card)                          ->    3328    0.001    0.001  /home/polty/document/M2ORO/ppc_sat/solver_python/memento.py:18(__init__)
+                                                                                                               501    0.000    0.000  /home/polty/document/M2ORO/ppc_sat/solver_python/memento.py:47(__init__)
+                                                                                                           1766016    0.831    0.831  /home/polty/document/M2ORO/ppc_sat/solver_python/memento.py:76(__init__)
+                                                                                                          13308765    0.594    0.594  {built-in method builtins.len}
+                                                                                                              3829    0.000    0.000  {method 'append' of 'list' objects}
+/home/polty/document/M2ORO/ppc_sat/solver_python/propagator.py:15(append_modification)                  ->   92089    0.027    0.040  /home/polty/document/M2ORO/ppc_sat/solver_python/memento.py:24(apply)
+                                                                                                            114122    0.024    0.030  /home/polty/document/M2ORO/ppc_sat/solver_python/memento.py:53(apply)
+                                                                                                           1854777    0.834    3.892  /home/polty/document/M2ORO/ppc_sat/solver_python/memento.py:84(apply)
+                                                                                                           3810587    0.201    0.201  {method 'extend' of 'list' objects}
+/home/polty/document/M2ORO/ppc_sat/solver_python/propagator.py:26(propagate)                            ->   12430    0.018    0.027  /home/polty/document/M2ORO/ppc_sat/solver_python/constraint.py:30(filter)
+                                                                                                             29587    0.357    0.536  /home/polty/document/M2ORO/ppc_sat/solver_python/constraint.py:59(filter)
+                                                                                                             88329    0.017    0.021  /home/polty/document/M2ORO/ppc_sat/solver_python/memento.py:36(effective)
+                                                                                                               144    0.001    0.001  /home/polty/document/M2ORO/ppc_sat/solver_python/memento.py:39(__str__)
+                                                                                                            113189    0.020    0.025  /home/polty/document/M2ORO/ppc_sat/solver_python/memento.py:65(effective)
+                                                                                                             88329    0.023    0.023  /home/polty/document/M2ORO/ppc_sat/solver_python/memento.py:97(effective)
+                                                                                                             14173    0.403    2.176  /home/polty/document/M2ORO/ppc_sat/solver_python/model.py:27(feasible)
+                                                                                                           3810587    2.621    6.785  /home/polty/document/M2ORO/ppc_sat/solver_python/propagator.py:15(append_modification)
+                                                                                                           3768570    2.486    3.913  /home/polty/document/M2ORO/ppc_sat/solver_python/set_var.py:90(filter_on_card)
+                                                                                                             42377    0.002    0.002  {built-in method builtins.len}
+                                                                                                              5031    0.000    0.000  {method 'add' of 'set' objects}
+                                                                                                             42017    0.004    0.004  {method 'pop' of 'set' objects}
+/home/polty/document/M2ORO/ppc_sat/solver_python/solver.py:21(solve)                                    ->     747    0.001    0.003  /home/polty/.local/lib/python3.9/site-packages/ete3/coretype/tree.py:295(add_child)
+                                                                                                               260    0.000    0.000  /home/polty/document/M2ORO/ppc_sat/solver_python/memento.py:24(apply)
+                                                                                                               243    0.000    0.000  /home/polty/document/M2ORO/ppc_sat/solver_python/memento.py:30(revert)
+                                                                                                               260    0.001    0.001  /home/polty/document/M2ORO/ppc_sat/solver_python/memento.py:39(__str__)
+                                                                                                               243    0.000    0.001  /home/polty/document/M2ORO/ppc_sat/solver_python/memento.py:53(apply)
+                                                                                                               230    0.000    0.000  /home/polty/document/M2ORO/ppc_sat/solver_python/memento.py:59(revert)
+                                                                                                               243    0.000    0.000  /home/polty/document/M2ORO/ppc_sat/solver_python/memento.py:68(__str__)
+                                                                                                                 1    0.000    0.000  /home/polty/document/M2ORO/ppc_sat/solver_python/model.py:37(model_truth)
+                                                                                                                 1    0.000    0.000  /home/polty/document/M2ORO/ppc_sat/solver_python/propagator.py:6(__init__)
+                                                                                                               503    0.000    0.000  /home/polty/document/M2ORO/ppc_sat/solver_python/propagator.py:12(add_level_of_modification)
+                                                                                                               504    1.408   14.921  /home/polty/document/M2ORO/ppc_sat/solver_python/propagator.py:26(propagate)
+                                                                                                               473    0.283    0.949  /home/polty/document/M2ORO/ppc_sat/solver_python/propagator.py:60(backtrack)
+                                                                                                               261    0.001    0.005  /home/polty/document/M2ORO/ppc_sat/solver_python/solver.py:7(iterate_var_val)
+                                                                                                             503/1    0.092   15.933  /home/polty/document/M2ORO/ppc_sat/solver_python/solver.py:21(solve)
+                                                                                                               261    0.000    0.000  {built-in method builtins.len}
+/home/polty/document/M2ORO/ppc_sat/solver_python/main.py:14(solve)                                      ->       1    0.000    0.000  /home/polty/.local/lib/python3.9/site-packages/ete3/coretype/tree.py:192(__init__)
+                                                                                                                 1    0.000    0.000  /home/polty/.local/lib/python3.9/site-packages/ete3/coretype/tree.py:665(traverse)
+                                                                                                               749    0.000    0.001  /home/polty/.local/lib/python3.9/site-packages/ete3/coretype/tree.py:740(_iter_descendants_levelorder)
+                                                                                                               748    0.000    0.000  /home/polty/.local/lib/python3.9/site-packages/ete3/coretype/tree.py:973(is_leaf)
+                                                                                                               504    0.001    0.003  /home/polty/.local/lib/python3.9/site-packages/ete3/coretype/tree.py:2462(add_face)
+                                                                                                               504    0.000    0.001  /home/polty/.local/lib/python3.9/site-packages/ete3/treeview/faces.py:259(__init__)
+                                                                                                                 1    0.000    0.000  /home/polty/document/M2ORO/ppc_sat/solver_python/model.py:45(__init__)
+                                                                                                                 1    0.000    0.001  /home/polty/document/M2ORO/ppc_sat/solver_python/model.py:107(all_week_model)
+                                                                                                                 1    0.000   15.974  /home/polty/document/M2ORO/ppc_sat/solver_python/solver.py:21(solve)
+                                                                                                                 4    0.000    0.000  {built-in method time.time}
+<string>:1(<module>)                                                                                    ->       1    0.016   15.996  /home/polty/document/M2ORO/ppc_sat/solver_python/main.py:14(solve)
+{built-in method builtins.exec}                                                                         ->       1    0.000   15.996  <string>:1(<module>)
+
+
