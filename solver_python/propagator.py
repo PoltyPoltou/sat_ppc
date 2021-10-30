@@ -59,5 +59,5 @@ class Propagator:
 
     def backtrack(self):
         modif_to_revert: list[Memento] = self.modifications.pop()
-        for memento in modif_to_revert:
-            memento.revert()
+        for i in range(len(modif_to_revert)):
+            modif_to_revert[-i].revert()
