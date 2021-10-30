@@ -31,11 +31,8 @@ def solve(model: Model, propagator=None, sgp=None, tree: TreeNode = Tree()):
             return valid
         for memento in modifs:
             memento.apply()
-            week = ""
-            if sgp:
-                week = sgp.get_week_str(1)
             propagator.add_level_of_modification([])
-            if solve(model, propagator, sgp, tree.add_child(name=week + str(memento))):
+            if solve(model, propagator, sgp, tree.add_child(name=str(memento))):
                 return True
             propagator.backtrack()
             memento.revert()
