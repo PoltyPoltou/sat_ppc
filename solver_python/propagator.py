@@ -13,15 +13,15 @@ class Propagator:
         self.modifications.append(new_modifs)
 
     def append_modification(self, new_modifs):
-        feasable = True
+        feasible = True
         faulty_memento = None
         for m in new_modifs:
             m.apply()
-            if feasable and not m.valid:
+            if feasible and not m.valid:
                 faulty_memento = m
-                feasable = False
+                feasible = False
         self.modifications[-1].extend(new_modifs)
-        return feasable, faulty_memento
+        return feasible, faulty_memento
 
     def propagate(self, nb_iter=-1):
         woken_constraints = set(self.model.constraints)
@@ -33,9 +33,9 @@ class Propagator:
         # upgrade 2 : checking first for false model
         # checking feasability
             if i % self.loops_backtrack == 0:
-                feasable_status = self.model.feasable()
-                if not feasable_status[0]:
-                    return feasable_status
+                feasible_status = self.model.feasible()
+                if not feasible_status[0]:
+                    return feasible_status
             constraint = woken_constraints.pop()
             mementos = constraint.filter()
             modif_infos = self.append_modification(mementos)

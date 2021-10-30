@@ -5,6 +5,12 @@ from set_var import Set_var
 
 
 class Model:
+    '''
+    Class that stores contraints and variables of a model
+    a map to link variables to its constraints
+    a map to link priority to every variables with that priority
+    '''
+
     def __init__(self) -> None:
         self.constraints: set(Constraint) = set()
         self.variables: set(Set_var) = set()
@@ -12,6 +18,9 @@ class Model:
         self.var_to_constraints = {}
 
     def add_constraint(self, cons: Constraint):
+        '''
+        add the constraint, every variable not yet in the model and updates var_priority_dict and var_to_constraints
+        '''
         self.constraints.add(cons)
         for var in cons.get_vars():
             if var not in self.variables:
@@ -24,9 +33,14 @@ class Model:
         for var in cons.get_vars():
             self.var_to_constraints[var].append(cons)
 
-    def feasable(self) -> tuple[bool, str]:
+    def feasible(self) -> tuple[bool, str]:
+        '''
+        checks constraints failure and variable feasibility
+        return True, "" if the model is still feasible
+        return (False, reason) if the model is not feasible
+        '''
         for var in self.variables:
-            if not var.feasable():
+            if not var.feasible():
                 return False, "Var unsat"
         # upgrade 3 : checking failure of constraints too
         for c in self.constraints:
@@ -35,6 +49,9 @@ class Model:
         return True, ""
 
     def model_truth(self):
+        '''
+        checks that every constraint is satisfied
+        '''
         for c in self.constraints:
             if not c.satisfied():
                 return False
@@ -42,6 +59,16 @@ class Model:
 
 
 class Sgp:
+    '''
+    sgp modelisation
+    functions to get a Model with different symmetry breaking
+    main use is with :\n
+    - get_basic_model\n
+    - first_week_model\n
+    - all_week_model\n
+    - print_sol
+    '''
+
     def __init__(self, g, s, w) -> None:
         self.groups = g
         self.size = s

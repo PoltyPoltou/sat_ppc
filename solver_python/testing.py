@@ -124,9 +124,9 @@ def test_intersect():
     assert 3 in g.lb
     assert f.card_bounds == (1, 2)
     assert g.card_bounds == (1, 2)
-    assert f.feasable()
-    assert g.feasable()
-    assert h.feasable()
+    assert f.feasible()
+    assert g.feasible()
+    assert h.feasible()
 
 
 def test_model():
