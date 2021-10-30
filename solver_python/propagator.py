@@ -13,6 +13,11 @@ class Propagator:
         self.modifications.append(new_modifs)
 
     def append_modification(self, new_modifs):
+        '''
+        add new modifications to the actual level and apply every memento\n
+        return the feasability of the variables after applying
+        these mementos and the memento object assiociated
+        '''
         feasible = True
         faulty_memento = None
         for m in new_modifs:
@@ -24,14 +29,15 @@ class Propagator:
         return feasible, faulty_memento
 
     def propagate(self, nb_iter=-1):
-        woken_constraints = set(self.model.constraints)
+        # defines the number of loops to do, by default it is self.propagate_loops
         if nb_iter < 0:
             nb_iter = self.propagate_loops
+        # We put every constraint at initialization
+        woken_constraints = set(self.model.constraints)
         i = -1
         while len(woken_constraints) != 0 and i < nb_iter:
             i += 1
-        # upgrade 2 : checking first for false model
-        # checking feasability
+            # upgrade 2 : checking first for false model at a fixed frequency
             if i % self.loops_backtrack == 0:
                 feasible_status = self.model.feasible()
                 if not feasible_status[0]:
@@ -45,7 +51,7 @@ class Propagator:
 
             # waking up constraints
             for m in mementos:
-                # upgrade 1 : checking effectivity of modification (ie. the var will be affected)
+                # upgrade 1 : checking effectivity of modification (ie. if the var is affected)
                 if m.effective():
                     for new_constraint in self.model.var_to_constraints[m.var]:
                         if new_constraint != constraint:

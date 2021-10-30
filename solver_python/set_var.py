@@ -66,7 +66,10 @@ class Set_var:
         the var will keep the better bounds out of card_bounds and new_card\n
         return True iff the var is still feasible
         '''
-        return self.change_card(new_card[0], new_card[1])
+        self.card_bounds = (
+            max(new_card[0], self.card_bounds[0]),
+            min(new_card[1], self.card_bounds[1]))
+        return self.check_bounds()
 
     def change_card(self, lower=None, upper=None) -> bool:
         '''
