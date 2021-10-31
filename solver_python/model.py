@@ -57,6 +57,12 @@ class Model:
                 return False
         return True
 
+    def enum_variables(self):
+        '''
+        return a list of variables not yet set
+        '''
+        return [v for v in self.variables if not v.set()]
+
 
 class Sgp:
     '''
@@ -96,8 +102,8 @@ class Sgp:
 
     def init_schedule_all_week(self):
         self.schedule = np.empty((self.weeks, self.groups), Set_var)
-        for w in range(len(self.schedule)):
-            for g in range(len(self.schedule[w])):
+        for w in range(self.weeks):
+            for g in range(self.groups):
                 if w == 0:
                     self.schedule[w, g] = Set_var(
                         range(g*self.size, (g+1)*self.size), range(g*self.size, (g+1)*self.size), (self.size, self.size), "s[{},{}]".format(w, g))
