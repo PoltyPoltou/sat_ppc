@@ -119,7 +119,10 @@ class Set_var:
         '''
         return True iff the variable is fully set
         '''
-        return len(self.lb) == len(self.ub) and self.feasible()
+        return self.set() and self.feasible()
+
+    def set(self):
+        return len(self.lb) == len(self.ub)
 
     def feasible(self):
         '''
