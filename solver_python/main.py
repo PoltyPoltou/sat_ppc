@@ -34,6 +34,9 @@ def solve(g, s, w, name=None, f=None):
     if f != None:
         f.write("{}-{}-{} feasible : {}, model : {:.2f}s, solve : {:.2f}s\n".format(
             g, s, w, feseable, model_1-model_0, solve_1-solve_0))
+    else:
+        print("{}-{}-{} feasible : {}, model : {:.2f}s, solve : {:.2f}s".format(
+            g, s, w, feseable, model_1-model_0, solve_1-solve_0))
 
 
 def benchmark(name, g, s, weeks):
