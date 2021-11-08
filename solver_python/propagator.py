@@ -1,5 +1,5 @@
-from model import Model
-from memento import Memento
+from .model import Model
+from .memento import Memento
 
 
 class Propagator:

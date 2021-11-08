@@ -1,8 +1,8 @@
 from ete3.coretype.tree import Tree, TreeNode
-from memento import LB_memento, UB_memento
-from model import Model
-from propagator import Propagator
 import random
+from .memento import LB_memento, UB_memento
+from .model import Model
+from .propagator import Propagator
 random.seed(0)
 
 

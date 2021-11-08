@@ -1,7 +1,6 @@
 import numpy as np
-from constraint import *
-
-from set_var import Set_var
+from .constraint import *
+from .set_var import Set_var
 
 
 class Model:

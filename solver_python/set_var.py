@@ -1,4 +1,4 @@
-from memento import Card_memento, LB_memento, Memento, UB_memento
+from .memento import Card_memento, LB_memento, Memento, UB_memento
 
 
 class Set_var:

@@ -1,6 +1,6 @@
 import pstats
 import cProfile
-from main import solve
+from .main import solve
 #cProfile.run(statement='solve(None,5,3,3)', filename="stats.txt")
 f = open("output.txt", mode="w")
 a: pstats.Stats = pstats.Stats("stats.txt", stream=f)

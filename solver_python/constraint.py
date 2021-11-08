@@ -1,5 +1,5 @@
-from set_var import Set_var
-from memento import Card_memento, LB_memento, Memento, UB_memento
+from .set_var import Set_var
+from .memento import Card_memento, LB_memento, Memento, UB_memento
 
 
 class Constraint:
