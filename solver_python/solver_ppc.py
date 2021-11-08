@@ -10,13 +10,13 @@ lock = multiprocessing.Lock()
 
 def solve_ppc(g, s, w, f=None, name=None):
     # Solve and timings and writing
-    a = model.Sgp(g, s, w)
+    sgp_ppc_model = model.Sgp(g, s, w)
     model_0 = time()
-    mdl = a.all_week_model()
+    mdl = sgp_ppc_model.all_week_model()
     model_1 = time()
     t = Tree()
     solve_0 = time()
-    feseable = solver.solve(mdl, sgp=a, tree=t)
+    feseable = solver.solve(mdl, sgp=sgp_ppc_model, tree=t)
     solve_1 = time()
 
     for node in t.traverse():
