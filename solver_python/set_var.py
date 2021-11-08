@@ -15,6 +15,7 @@ class Set_var:
         self.card_bounds = card_bounds
         self.name = name
         self.priority = priority
+        self.causality_vars = {}
 
     def check_bounds(self):
         '''
@@ -129,3 +130,18 @@ class Set_var:
         return True iff the variable is valid
         '''
         return self.check_sets() and self.check_bounds()
+
+    def add_causality(self, v):
+        if v and v != self:
+            if v in self.causality_vars:
+                self.causality_vars[v] += 1
+            else:
+                self.causality_vars[v] = 1
+
+    def remove_causality(self, v):
+        if v and v != self:
+            if v in self.causality_vars:
+                if self.causality_vars[v] == 1:
+                    self.causality_vars.pop()
+                self.causality_vars[v] -= 1
+                assert self.causality_vars[v] >= 0

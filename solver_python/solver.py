@@ -2,16 +2,29 @@ from ete3.coretype.tree import Tree, TreeNode
 from memento import LB_memento, UB_memento
 from model import Model
 from propagator import Propagator
+import random
+random.seed(0)
 
 
 def iterate_var_val(model: Model):
     # upgrade 4 having prioritized variables
     priority_var = model.var_priority_dict[max(model.var_priority_dict.keys())]
-    for var in priority_var:
+    for var in [v for v in priority_var if not v.set()]:
         if var.feasible() and not var.defined():
             value = next(iter(var.ub-var.lb))
             return [LB_memento(var, {value}), UB_memento(var, {value})]
-    for var in model.variables:
+    for var in model.enum_variables():
+        if var.feasible() and not var.defined():
+            value = next(iter(var.ub-var.lb))
+            return [LB_memento(var, {value}), UB_memento(var, {value})]
+    return []
+
+
+def iterate_var_val_order_bound(model: Model, ub=True, descending=False):
+    # upgrade 5 ?
+    ordered_var = sorted(
+        model.enum_variables(), key=lambda var: len(var.ub if ub else var.lb), reverse=descending)
+    for var in ordered_var:
         if var.feasible() and not var.defined():
             value = next(iter(var.ub-var.lb))
             return [LB_memento(var, {value}), UB_memento(var, {value})]

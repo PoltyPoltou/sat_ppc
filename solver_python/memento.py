@@ -15,20 +15,23 @@ class Memento:
 
 
 class LB_memento(Memento):
-    def __init__(self, var, to_add: set[int]) -> None:
+    def __init__(self, var, to_add: set[int], causality_var=None) -> None:
         self.var = var
+        self.causality_var = causality_var
         self.to_add = to_add
         self.applied = False
         self.valid = True
 
     def apply(self) -> None:
         if not self.applied:
+            self.var.add_causality(self.causality_var)
             for elmt in self.to_add:
                 self.valid = self.valid & self.var.add_to_lb(elmt)
             self.applied = True
 
     def revert(self) -> None:
         if self.applied:
+            self.var.remove_causality(self.causality_var)
             for elmt in self.to_add:
                 self.var.remove_from_lb(elmt)
             self.applied = False
@@ -44,20 +47,23 @@ class LB_memento(Memento):
 
 
 class UB_memento(Memento):
-    def __init__(self, var, to_remove: set[int]) -> None:
+    def __init__(self, var, to_remove: set[int], causality_var=None) -> None:
         self.var = var
+        self.causality_var = causality_var
         self.to_remove = to_remove
         self.applied = False
         self.valid = True
 
     def apply(self) -> None:
         if not self.applied:
+            self.var.add_causality(self.causality_var)
             for elmt in self.to_remove:
                 self.valid = self.valid & self.var.remove_from_ub(elmt)
             self.applied = True
 
     def revert(self) -> None:
         if self.applied:
+            self.var.remove_causality(self.causality_var)
             for elmt in self.to_remove:
                 self.var.add_to_ub(elmt)
             self.applied = False
@@ -73,8 +79,9 @@ class UB_memento(Memento):
 
 
 class Card_memento(Memento):
-    def __init__(self, var, new_card: tuple[int, int]) -> None:
+    def __init__(self, var, new_card: tuple[int, int], causality_var=None) -> None:
         self.var = var
+        self.causality_var = causality_var
         self.new_card = new_card
         self.old_card = None
         self.applied_card = None
@@ -83,6 +90,7 @@ class Card_memento(Memento):
 
     def apply(self) -> None:
         if not self.applied:
+            self.var.add_causality(self.causality_var)
             self.old_card = self.var.card_bounds
             self.valid = self.valid & self.var.change_card_tuple(self.new_card)
             self.applied_card = self.var.card_bounds
@@ -90,6 +98,7 @@ class Card_memento(Memento):
 
     def revert(self) -> None:
         if self.applied and self.old_card != None:
+            self.var.remove_causality(self.causality_var)
             self.var.set_card(self.old_card)
             self.old_card = None
             self.applied = False
