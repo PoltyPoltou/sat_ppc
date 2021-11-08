@@ -1,20 +1,10 @@
-import multiprocessing
 import sys
-from time import sleep, time
+from time import time
 from set_sat import Set_Sat
 from set_sat_advanced import Set_Sat_Adv
 
 
-def sgp_set_to_sat(groups,
-                   size,
-                   weeks,
-                   out=sys.stdout,
-                   sgp=Set_Sat()):
-
-    model_start = time()
-    n_golfers = size * groups
-    schedule = [[0]*groups for i in range(weeks)]
-
+def init_set_variables(groups, size, weeks, sgp, n_golfers, schedule):
     for w in range(weeks):
         for g in range(groups):
             if w == 0:
@@ -24,6 +14,8 @@ def sgp_set_to_sat(groups,
                 schedule[w][g] = sgp.add_set_var(
                     [i for i in range(size) if i % groups == g], range(n_golfers))
 
+
+def init_constraints(groups, size, weeks, sgp, n_golfers, schedule):
     for w in range(weeks):
         for g in range(groups):
             sgp.cardinal(schedule[w][g], size)
@@ -44,6 +36,21 @@ def sgp_set_to_sat(groups,
     for w in range(weeks):
         sgp.order_by_min(schedule[w])
     sgp.order_by_max([schedule[w][0] for w in range(weeks)])
+
+
+def sgp_set_to_sat(groups,
+                   size,
+                   weeks,
+                   out=sys.stdout,
+                   sgp=Set_Sat()):
+
+    model_start = time()
+    n_golfers = size * groups
+    schedule = [[0]*groups for i in range(weeks)]
+
+    init_set_variables(groups, size, weeks, sgp, n_golfers, schedule)
+
+    init_constraints(groups, size, weeks, sgp, n_golfers, schedule)
     model_end = time()
 
     mdl = sgp.solve()
