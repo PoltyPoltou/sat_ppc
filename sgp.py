@@ -6,7 +6,7 @@ import pysat.solvers
 import pysat.formula
 
 
-class SGP:
+class SGP_pure_sat:
     def __init__(self, groups, size, weeks):
         self.groups = groups
         self.size = size
@@ -33,24 +33,7 @@ class SGP:
 
     def print_solution(self, f=sys.stdout):
         if self.solver.status:
-            schedule = []
-            for w in range(self.weeks):
-                schedule.append([])
-                for g in range(self.groups):
-                    schedule[w].append([])
-
-            for var in self.solver.get_model():
-                idx = abs(var)
-                if(idx == self.idx_last_encoding_var):
-                    break
-                sign = (idx / var) == 1
-                idx -= 1
-                golfeur = idx % self.n_golfers
-                g = ((idx - golfeur) // self.n_golfers) % self.groups
-                w = (idx - golfeur - g *
-                     self.n_golfers) // (self.n_golfers * self.groups)
-                if(sign):
-                    schedule[w][g].append(golfeur)
+            schedule = self.get_set_solution()
             for w in schedule:
                 for g in w:
                     for i in g:
@@ -61,11 +44,27 @@ class SGP:
         else:
             print("UNSAT", file=f)
 
-    def solve(self):
-        self.solver.solve()
+    def solve(self, assumptions=[]):
+        self.solver.solve(assumptions=assumptions)
+
+    def get_set_solution(self):
+        if self.solver.status:
+            schedule = [[[] for j in range(self.groups)]
+                        for i in range(self.weeks)]
+            for var in self.solver.get_model()[:self.idx_last_encoding_var-1]:
+                if var > 0:
+                    idx = var - 1
+                    golfeur = idx % self.n_golfers
+                    g = ((idx - golfeur) // self.n_golfers) % self.groups
+                    w = (idx - golfeur - g *
+                         self.n_golfers) // (self.n_golfers * self.groups)
+                    schedule[w][g].append(golfeur)
+            return schedule
+        else:
+            return []
 
 
-def golfer_one_group_per_week(sgp_pb: SGP):
+def golfer_one_group_per_week(sgp_pb: SGP_pure_sat):
     for i in range(sgp_pb.n_golfers):
         for w in range(sgp_pb.weeks):
             # at least 1
@@ -82,7 +81,7 @@ def golfer_one_group_per_week(sgp_pb: SGP):
                     sgp_pb.add_clause(clause)
 
 
-def golfers_arent_social(sgp_pb: SGP):
+def golfers_arent_social(sgp_pb: SGP_pure_sat):
     for w1 in range(sgp_pb.weeks):
         for w2 in range(sgp_pb.weeks):
             if(w1 != w2):
@@ -96,7 +95,7 @@ def golfers_arent_social(sgp_pb: SGP):
                                     sgp_pb.add_clause(clause)
 
 
-def golfers_arent_social_1(sgp_pb: SGP):
+def golfers_arent_social_1(sgp_pb: SGP_pure_sat):
     encounter = [None] * sgp_pb.weeks
     for w in range(sgp_pb.weeks):
         encounter[w] = [None] * sgp_pb.groups
@@ -134,7 +133,7 @@ def golfers_arent_social_1(sgp_pb: SGP):
                                                        -encounter[w2][g2][i1][i2]])
 
 
-def group_size_fixed_binomial_encoding(sgp_pb: SGP):
+def group_size_fixed_binomial_encoding(sgp_pb: SGP_pure_sat):
     # group size is defined
     all_combin = list(itertools.combinations(
         range(sgp_pb.n_golfers), sgp_pb.size+1))
@@ -147,7 +146,7 @@ def group_size_fixed_binomial_encoding(sgp_pb: SGP):
                 sgp_pb.add_clause(clause)
 
 
-def at_most_k(sgp_pb: SGP, k, x):
+def at_most_k(sgp_pb: SGP_pure_sat, k, x):
     # http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.83.9527&rep=rep1&type=pdf
     n = len(x)
     s = []
@@ -171,7 +170,7 @@ def at_most_k(sgp_pb: SGP, k, x):
     return clauses
 
 
-def group_size_fixed_sequential_encoding(sgp_pb: SGP):
+def group_size_fixed_sequential_encoding(sgp_pb: SGP_pure_sat):
     # group size is defined
     for w in range(sgp_pb.weeks):
         for g in range(sgp_pb.groups):
@@ -179,25 +178,25 @@ def group_size_fixed_sequential_encoding(sgp_pb: SGP):
                 sgp_pb.add_clause(c)
 
 
-def first_week(sgp_pb: SGP):
+def first_week(sgp_pb: SGP_pure_sat):
     for g in range(sgp_pb.groups):
         for i in range(sgp_pb.size*g, sgp_pb.size*(g+1)):
             clause = [sgp_pb.var_encoding[0][g][i]]
             sgp_pb.add_clause(clause)
 
 
-def second_week(sgp_pb: SGP):
+def second_week(sgp_pb: SGP_pure_sat):
     for w in range(1, sgp_pb.weeks):
         for i in range(sgp_pb.size):
             sgp_pb.add_clause([sgp_pb.var_encoding[w][i % sgp_pb.groups][i]])
 
 
-def groups_with_0(sgp_pb: SGP):
+def groups_with_0(sgp_pb: SGP_pure_sat):
     for w in range(1, int(sgp_pb.n_golfers / sgp_pb.size)):
         sgp_pb.add_clause([sgp_pb.var_encoding[w][0][sgp_pb.size*w]])
 
 
-def order_groups(sgp_pb: SGP):
+def order_groups(sgp_pb: SGP_pure_sat):
     group_minimums = []
     # min variables declarations
     for w in range(sgp_pb.weeks):
@@ -241,7 +240,7 @@ def order_groups(sgp_pb: SGP):
                             [-group_minimums[w][g1][i1], -group_minimums[w][g2][i2]])
 
 
-def order_weeks(sgp_pb: SGP):
+def order_weeks(sgp_pb: SGP_pure_sat):
     week_max = []
     # miax variables declarations
     for w in range(sgp_pb.weeks):
@@ -279,7 +278,7 @@ def order_weeks(sgp_pb: SGP):
                         [-week_max[w1][i1], -week_max[w2][i2]])
 
 
-def latch(sgp_pb: SGP, array_idx):
+def latch(sgp_pb: SGP_pure_sat, array_idx):
     # defining the latch
     latch_lst = []
     n = len(array_idx)
@@ -295,7 +294,7 @@ def latch(sgp_pb: SGP, array_idx):
     return latch_lst
 
 
-def min_latch(sgp_pb: SGP, array_idx):
+def min_latch(sgp_pb: SGP_pure_sat, array_idx):
     clauses = []
     n = len(array_idx)
 
@@ -325,7 +324,7 @@ def min_latch(sgp_pb: SGP, array_idx):
     return min_var
 
 
-def order_group_latch(sgp_pb: SGP):
+def order_group_latch(sgp_pb: SGP_pure_sat):
     latch_group_list = []
     for w in range(sgp_pb.weeks):
         latch_group_list.append([])
@@ -341,7 +340,7 @@ def order_group_latch(sgp_pb: SGP):
     return latch_group_list
 
 
-def order_week_latch(sgp_pb: SGP):
+def order_week_latch(sgp_pb: SGP_pure_sat):
     latch_week_list = []
     for w in range(sgp_pb.weeks):
         latch_week_list.append(
@@ -354,8 +353,20 @@ def order_week_latch(sgp_pb: SGP):
     return latch_week_list
 
 
+def init_constraint_pure_sat(pure_sat_sgp):
+    order_group_latch(pure_sat_sgp)
+    order_week_latch(pure_sat_sgp)
+    golfer_one_group_per_week(pure_sat_sgp)
+    golfers_arent_social(pure_sat_sgp)
+    group_size_fixed_sequential_encoding(pure_sat_sgp)
+
+
+def solve_pure_sat(groups, size, weeks, f=sys.stdout, name=None):
+    solve(groups, size, weeks, f)
+
+
 def solve(groups, size, weeks, f=sys.stdout):
-    pb = SGP(groups, size, weeks)
+    pb = SGP_pure_sat(groups, size, weeks)
     start_model = time()
     # symmetry breaking
     first_week(pb)
