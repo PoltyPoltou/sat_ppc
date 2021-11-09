@@ -51,5 +51,4 @@ def solve(model: Model, propagator=None, sgp=None, tree: TreeNode = Tree()):
             memento.revert()
     else:
         tree.add_child(name=propagate_infos[1])
-
     return False

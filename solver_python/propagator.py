@@ -3,11 +3,11 @@ from .memento import Memento
 
 
 class Propagator:
-    def __init__(self, model) -> None:
+    def __init__(self, model, propagate_loops=10000) -> None:
         self.model: Model = model  #  model to propagate stuff on
         self.modifications: list[list[Memento]] = [[]]
         self.loops_backtrack = 3
-        self.propagate_loops = 10000
+        self.propagate_loops = propagate_loops
 
     def add_level_of_modification(self, new_modifs):
         self.modifications.append(new_modifs)
