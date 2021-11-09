@@ -35,7 +35,7 @@ def init_constraints(groups, size, weeks, sgp, n_golfers, schedule):
                     sgp.cardinal_ub(k, 1)
     for w in range(weeks):
         sgp.order_by_min(schedule[w])
-    sgp.order_by_max([schedule[w][0] for w in range(weeks)])
+    # sgp.order_by_max([schedule[w][0] for w in range(weeks)])
 
 
 def sgp_set_to_sat(groups,
