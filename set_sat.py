@@ -211,19 +211,20 @@ class Set_Sat(Set_Sat_interface):
         return latch_map
 
     def order_by_latch(self, latch_group_list, set_array):
-        key_list = [list(self.set_sat_idx[i].keys()) for i in set_array]
+        key_list = [list(self.set_sat_idx[i].keys())
+                    for i in set_array]
         for idx in range(1, len(latch_group_list)):
             i = 0
             j = 0
             while i < len(key_list[idx-1]) and j < len(key_list[idx]):
                 if key_list[idx-1][i] == key_list[idx][j]:
-                    self.add_clause([-latch_group_list[idx-1][i],
-                                    latch_group_list[idx][j]])
+                    self.add_clause([-latch_group_list[idx-1][key_list[idx-1][i]],
+                                    latch_group_list[idx][key_list[idx][j]]])
                     i += 1
                     j += 1
                 elif key_list[idx-1][i] > key_list[idx][j]:
-                    self.add_clause([-latch_group_list[idx-1][i],
-                                    latch_group_list[idx][j]])
+                    self.add_clause([-latch_group_list[idx-1][key_list[idx-1][i]],
+                                    latch_group_list[idx][key_list[idx][j]]])
                     j += 1
                 else:  # key_list[idx][j] > key_list[idx-1][i]:
                     i += 1
