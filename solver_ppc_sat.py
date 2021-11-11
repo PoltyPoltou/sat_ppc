@@ -88,9 +88,11 @@ def solve_sgp_ppc_pure_sat(model: model.Model, propag=None, sgp_csp: model.Sgp =
         init_constraint_pure_sat(pure_sat_model)
     if depth == 5:
         # we switch to sat modeling and solve it
+        start = time()
         solution_set = solve_pure_sat_from_csp(sgp_csp, pure_sat_model)
+        sat_solve = time() - start
         if len(solution_set) == 0:
-            tree.add_child(name="SAT->UNSAT")
+            tree.add_child(name="SAT->UNSAT {:.2f}".format(sat_solve))
             return False
         else:
             # we found a solution in SAT, we must set variables of the csp
@@ -99,12 +101,12 @@ def solve_sgp_ppc_pure_sat(model: model.Model, propag=None, sgp_csp: model.Sgp =
                 for g in range(sgp_csp.groups):
                     sgp_csp.schedule[w, g].lb = set(solution_set[w][g])
                     sgp_csp.schedule[w, g].ub = set(solution_set[w][g])
-            tree.add_child(name="SAT->FOUND EOF")
+            tree.add_child(name="SAT->EOF {:.2f}".format(sat_solve))
             return True
     else:
         if propag == None:
             # init of solving
-            propag = propagator.Propagator(model, 1000)
+            propag = propagator.Propagator(model, 500)
         propagate_infos = propag.propagate()
         if propagate_infos[0]:
             modifs = solver.iterate_var_val(model)
@@ -128,9 +130,11 @@ def solve_sgp_ppc_sat(model: model.Model, propag=None, sgp_csp: model.Sgp = None
     if depth == 5:
         # we switch to sat modeling and solve it
         sat_sgp, schedule = transform_csp_to_sat_sgp_adv(sgp_csp)
+        start = time()
         solution_sat = sat_sgp.solve()
+        sat_solve = time() - start
         if len(solution_sat) == 0:
-            tree.add_child(name="SAT->UNSAT")
+            tree.add_child(name="SAT->UNSAT {:.2f}".format(sat_solve))
             return False
         else:
             # we found a solution in SAT, we must set variables of the csp
@@ -142,7 +146,7 @@ def solve_sgp_ppc_sat(model: model.Model, propag=None, sgp_csp: model.Sgp = None
                         solution_set[schedule[w][g]])
                     sgp_csp.schedule[w, g].ub = set(
                         solution_set[schedule[w][g]])
-            tree.add_child(name="SAT->FOUND EOF")
+            tree.add_child(name="SAT->FOUND EOF {:.2f}".format(sat_solve))
             return True
     else:
         if propag == None:
