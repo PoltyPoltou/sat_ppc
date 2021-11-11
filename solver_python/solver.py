@@ -1,5 +1,7 @@
 from ete3.coretype.tree import Tree, TreeNode
 import random
+
+from .cspnode import CSPNode
 from .memento import LB_memento, UB_memento
 from .model import Model
 from .propagator import Propagator
@@ -52,3 +54,59 @@ def solve(model: Model, propagator=None, sgp=None, tree: TreeNode = Tree()):
     else:
         tree.add_child(name=propagate_infos[1])
     return False
+
+
+def go_to_next_node(exec_node: CSPNode, propagator: Propagator, backtrack=False, backjump=None):
+    if backjump != None:
+        pass
+    elif backtrack:
+        if exec_node.up == None:
+            raise Exception("backtrack on root node")
+        else:
+            while exec_node.up != None and exec_node.up.children.index(exec_node) == len(exec_node.up.children)-1:
+                propagator.backtrack()
+                exec_node.revert_memento()
+                exec_node = exec_node.up
+            if exec_node.up == None:
+                # we have no node left to explore
+                return None
+        propagator.backtrack()
+        exec_node.revert_memento()
+        child_idx = exec_node.up.children.index(exec_node)
+        exec_node = exec_node.up.children[child_idx+1]
+        exec_node.apply_memento()
+        propagator.add_level_of_modification([])
+        return exec_node
+    else:
+        if len(exec_node.children) == 0:
+            raise Exception(
+                "go_to_next_node without backtrack used with no children available")
+        else:
+            exec_node.children[0].apply_memento()
+            propagator.add_level_of_modification([])
+            return exec_node.children[0]
+
+
+def solve_iterative(model: Model, sgp=None):
+    propagator = Propagator(model)
+    exec_tree = CSPNode()
+    exec_node = exec_tree
+    while exec_node != None:
+        propagate_infos = propagator.propagate()
+        new_modifs = iterate_var_val(model)
+        if len(new_modifs) == 0 and model.model_truth():
+            exec_node.add_child(name="Found")
+            return True, exec_tree
+        elif len(new_modifs) == 0 or not propagate_infos[0]:
+            exec_node.add_child(name="backtrack")
+            if exec_node == exec_tree:
+                # special case of backtrack on root node
+                return False, exec_tree
+            exec_node = go_to_next_node(
+                exec_node, propagator, backtrack=True)
+        else:
+            for modif in new_modifs:
+                exec_node.add_child(CSPNode(modif))
+            exec_node = go_to_next_node(exec_node, propagator)
+
+    return False, exec_tree
