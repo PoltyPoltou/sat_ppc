@@ -29,7 +29,7 @@ class Propagator:
         return feasible, faulty_memento
 
     def propagate(self, nb_iter=-1):
-        # defines the number of loops to do, by default it is self.propagate_loops
+        # nb_iter defines the number of loops to do, by default it is self.propagate_loops
         if nb_iter < 0:
             nb_iter = self.propagate_loops
         # We put every constraint at initialization

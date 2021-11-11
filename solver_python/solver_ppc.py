@@ -42,7 +42,7 @@ def solve_ppc_iter(g, s, w, f=None, name=None):
     mdl = sgp_ppc_model.all_week_model()
     model_1 = time()
     solve_0 = time()
-    feseable, t = solver.solve_iterative(mdl, sgp=sgp_ppc_model)
+    feseable, t = solver.solve_iterative(mdl)
     solve_1 = time()
 
     for node in t.traverse():
