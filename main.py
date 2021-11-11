@@ -25,11 +25,11 @@ def bench_core(name, g, s, weeks):
 
 
 if __name__ == "__main__":
-    from solver_python.solver_ppc import solve_ppc
+    from solver_python.solver_ppc import solve_ppc_iter
     from solver_set_sat import solve_sgp_adv, solve_sgp_basic
     from solver_ppc_sat import solve_csp_set_sat_mix, solve_csp_pure_sat_mix
     from sgp import solve_pure_sat
-    solve = solve_csp_set_sat_mix()
+    solve = solve_ppc_iter
     if not os.path.isdir("./ppc"):
         os.mkdir("./ppc")
     if len(sys.argv) == 4:
