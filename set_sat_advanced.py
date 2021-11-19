@@ -142,16 +142,17 @@ class Set_Sat_Adv(Set_Sat):
         '''
         latch_map = {}
         if len(self.set_sat_idx[i]) != 0:
-            array_idx = reverse_map(
-                self.set_sat_idx[i])if reverse else self.set_sat_idx[i]
             elmt_lb = None  # element of lower bound that must be taken in account in the latch
+            array_idx = dict(self.set_sat_idx[i])
             if len(self.lbounds[i]) != 0:
                 if reverse:
                     elmt_lb = max(self.lbounds[i])
-                    array_idx[max(self.set_sat_idx[i].keys()) - elmt_lb] = 0
                 else:
                     elmt_lb = min(self.lbounds[i])
-                    array_idx[elmt_lb] = 0
+                array_idx[elmt_lb] = 0
+
+            if reverse:
+                array_idx = reverse_map(array_idx)
             n = len(array_idx)
             if n != 0:
                 key_list_ordered = list(sorted(array_idx.keys()))
@@ -182,4 +183,7 @@ class Set_Sat_Adv(Set_Sat):
                         self.add_clause([latch_map[key_list_ordered[i]],
                                         array_idx[key_list_ordered[i-1]],
                                         -latch_map[key_list_ordered[i-1]]])
-        return latch_map
+        if reverse and len(latch_map) > 0:
+            return reverse_map(latch_map)
+        else:
+            return latch_map

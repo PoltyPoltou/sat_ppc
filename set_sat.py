@@ -190,8 +190,8 @@ class Set_Sat(Set_Sat_interface):
         n = len(array_idx)
         latch_map = {}
         if n != 0:
-            key_list_ordered = list(array_idx.keys())
-            for key in array_idx:
+            key_list_ordered = list(sorted(array_idx.keys()))
+            for key in key_list_ordered:
                 latch_map[key] = self.next_var()
             self.add_clause([-latch_map[key_list_ordered[0]]] +
                             list(array_idx.values()))
@@ -211,7 +211,7 @@ class Set_Sat(Set_Sat_interface):
         return latch_map
 
     def order_by_latch(self, latch_group_list, set_array):
-        key_list = [list(self.set_sat_idx[i].keys())
+        key_list = [list(sorted(self.set_sat_idx[i].keys()))
                     for i in set_array]
         for idx in range(1, len(latch_group_list)):
             i = 0

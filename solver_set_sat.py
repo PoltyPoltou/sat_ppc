@@ -7,7 +7,10 @@ from set_sat_advanced import Set_Sat_Adv
 def init_set_variables(groups, size, weeks, sgp, n_golfers, schedule):
     for w in range(weeks):
         for g in range(groups):
-            if w == 0:
+            if w == 1 and g == 2:
+                schedule[w][g] = sgp.add_set_var(
+                    [2], [2, 3, 5, 6, 7, 8, 10, 11, 12, 13, 14])
+            elif w == 0:
                 schedule[w][g] = sgp.add_set_var(
                     range(g*size, (g+1)*size), range(g*size, (g+1)*size))
             else:
@@ -35,7 +38,7 @@ def init_constraints(groups, size, weeks, sgp, n_golfers, schedule):
                     sgp.cardinal_ub(k, 1)
     for w in range(weeks):
         sgp.order_by_min(schedule[w])
-    # sgp.order_by_max([schedule[w][0] for w in range(weeks)])
+    sgp.order_by_max([schedule[w][0] for w in reversed(range(weeks))])
 
 
 def sgp_set_to_sat(groups,

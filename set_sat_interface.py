@@ -105,8 +105,6 @@ class Set_Sat_interface:
 
 def reverse_map(m: dict):
     new_dict = {}
-    key_list = list(reversed(list(m.keys())))
-    max_key = max(m.keys())
-    for key in key_list:
-        new_dict[max_key-key] = m[key]
+    for key in m.keys():
+        new_dict[-key] = m[key]
     return new_dict
