@@ -1,6 +1,7 @@
+from typing import Set
 from .set_var import Set_var
 from .memento import *
-from .constraint import EmptyIntersection, Intersection
+from .constraint import EmptyIntersection, Intersection, strict_less_than_by_max, strict_less_than_by_min
 from .solver import solve, solve_iterative
 from .model import Model, Sgp
 from .propagator import Propagator
@@ -129,6 +130,64 @@ def test_intersect():
     assert h.feasible()
 
 
+def test_order_min():
+    f1 = Set_var([], [0], (0, 2))
+    f2 = Set_var([], [1], (0, 2))
+    f3 = Set_var([1], [0, 1], (0, 2))
+    f4 = Set_var([0], [0, 1], (0, 2))
+    assert strict_less_than_by_max(f1, f2).satisfied()
+    assert strict_less_than_by_max(f1, f3).satisfied()
+    assert strict_less_than_by_max(f2, f1).failure()
+    assert strict_less_than_by_max(f3, f2).failure()
+
+    assert strict_less_than_by_min(f1, f2).satisfied()
+    assert strict_less_than_by_min(f4, f2).satisfied()
+    assert strict_less_than_by_min(f2, f1).failure()
+    assert strict_less_than_by_min(f1, f4).failure()
+
+    f = Set_var([], [0, 1, 2, 3], (0, 2))
+    g = Set_var([], [0, 1, 2, 3], (0, 2))
+    h = Set_var([], [0, 1, 2, 3], (0, 2))
+    c = strict_less_than_by_min(f, g)
+    c1 = strict_less_than_by_min(g, h)
+    assert not c.failure()
+    assert not c.satisfied()
+    for modif in c.filter():
+        modif.apply()
+    for modif in c1.filter():
+        modif.apply()
+    assert g.ub == {1, 2, 3}
+    assert h.ub == {2, 3}
+
+    f.add_to_lb(1)
+    f.remove_from_ub(0)
+    g.add_to_lb(1)
+    assert c.failure()
+    assert c1.satisfied()
+
+
+def test_order_max():
+    f = Set_var([], [0, 1, 2, 3], (0, 2))
+    g = Set_var([], [0, 1, 2, 3], (0, 2))
+    h = Set_var([], [0, 1, 2, 3], (0, 2))
+    c = strict_less_than_by_max(f, g)
+    c1 = strict_less_than_by_max(g, h)
+    assert not c.failure()
+    assert not c.satisfied()
+    for modif in c1.filter():
+        modif.apply()
+    for modif in c.filter():
+        modif.apply()
+    assert g.ub == {1, 2, 0}
+    assert f.ub == {0, 1}
+
+    h.add_to_lb(2)
+    h.remove_from_ub(3)
+    g.add_to_lb(2)
+    assert c1.failure()
+    assert c.satisfied()
+
+
 def test_model():
     m = Model()
     f = Set_var([1], [1, 2, 3], (0, 2), priority=1)
@@ -200,6 +259,8 @@ def test_solve_iter():
 def test_constraints():
     test_empty_intersect()
     test_intersect()
+    test_order_min()
+    test_order_max()
 
 
 def test_mementos():

@@ -126,6 +126,13 @@ class Sgp:
                                     "[{},{}]\u2229[{},{}]".format(w1, g1, w2, g2))
                         model.add_constraint(Intersection(
                             self.schedule[w1, g1], self.schedule[w2, g2], H))
+        for w in range(self.weeks):
+            for g in range(1, self.groups):
+                model.add_constraint(strict_less_than_by_min(
+                    self.schedule[w, g-1], self.schedule[w, g]))
+        for w in range(1, self.weeks):
+            model.add_constraint(strict_less_than_by_max(
+                self.schedule[w-1, 0], self.schedule[w, 0]))
         return model
 
     def get_basic_model(self):

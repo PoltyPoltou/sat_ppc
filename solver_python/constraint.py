@@ -89,17 +89,75 @@ class Intersection(Constraint):
         return not self.H.ub.issuperset(self.F.lb & self.G.lb)
 
 
-class MaxCardinalConstraint(Constraint):
-    def __init__(self, F: Set_var, card_max) -> None:
-        pass
+class strict_less_than_by_min(Constraint):
+    '''
+    represents a constraint F < G <=> min(F) < min(G)
+    '''
 
-    def filter(self) -> list[tuple[set[int], set[int], tuple[int, int]]]:
-        raise NotImplementedError()
+    def __init__(self, F, G) -> None:
+        self.F = F
+        self.G = G
+
+    def get_vars(self) -> list[Set_var]:
+        return [self.F, self.G]
+
+    def filter(self) -> list[Memento]:
+        to_remove_from_ub = set()
+        min_f = min(self.F.ub)
+        for elmt_ub in self.G.ub:
+            if elmt_ub <= min_f:
+                to_remove_from_ub.add(elmt_ub)
+        return [UB_memento(self.G, to_remove_from_ub)]
+
+    def satisfied(self) -> bool:
+        if len(self.F.lb) > 0 and len(self.G.ub) > 0:
+            return min(self.F.lb) < min(self.G.ub) or max(self.F.ub) < min(self.G.ub)
+        elif len(self.F.ub) > 0 and len(self.G.ub) > 0:
+            return max(self.F.ub) < min(self.G.ub)
+        else:
+            return False
+
+    def failure(self) -> bool:
+        if len(self.F.ub) > 0 and len(self.G.lb) > 0:
+            return min(self.F.ub) >= min(self.G.lb) or max(self.G.ub) <= min(self.F.ub)
+        elif len(self.F.ub) > 0 and len(self.G.ub) > 0:
+            return max(self.G.ub) <= min(self.F.ub)
+        else:
+            return False
 
 
-class MinCardinalConstraint(Constraint):
-    def __init__(self, F: Set_var, card_min) -> None:
-        pass
+class strict_less_than_by_max(Constraint):
+    '''
+    represents a constraint F < G <=> max(F) < max(G)
+    '''
 
-    def filter(self) -> list[tuple[set[int], set[int], tuple[int, int]]]:
-        raise NotImplementedError()
+    def __init__(self, F, G) -> None:
+        self.F = F
+        self.G = G
+
+    def get_vars(self) -> list[Set_var]:
+        return [self.F, self.G]
+
+    def filter(self) -> list[Memento]:
+        to_remove_from_ub = set()
+        max_g = max(self.G.ub)
+        for elmt_ub in self.F.ub:
+            if elmt_ub >= max_g:
+                to_remove_from_ub.add(elmt_ub)
+        return [UB_memento(self.F, to_remove_from_ub)]
+
+    def satisfied(self) -> bool:
+        if len(self.F.ub) > 0 and len(self.G.lb) > 0:
+            return max(self.F.ub) < max(self.G.lb) or max(self.F.ub) < min(self.G.ub)
+        elif len(self.F.ub) > 0 and len(self.G.ub) > 0:
+            return max(self.F.ub) < min(self.G.ub)
+        else:
+            return False
+
+    def failure(self) -> bool:
+        if len(self.F.lb) > 0 and len(self.G.ub) > 0:
+            return max(self.F.lb) >= max(self.G.ub) or min(self.F.ub) >= max(self.G.ub)
+        elif len(self.F.ub) > 0 and len(self.G.ub) > 0:
+            return min(self.F.ub) >= max(self.G.ub)
+        else:
+            return False
