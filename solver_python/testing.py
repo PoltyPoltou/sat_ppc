@@ -1,7 +1,12 @@
 from typing import Set
 from .set_var import Set_var
 from .memento import *
-from .constraint import EmptyIntersection, Intersection, strict_less_than_by_max, strict_less_than_by_min
+from .constraint import (
+    EmptyIntersection,
+    Intersection,
+    strict_less_than_by_max,
+    strict_less_than_by_min,
+)
 from .solver import solve, solve_iterative
 from .model import Model, Sgp
 from .propagator import Propagator
@@ -108,7 +113,7 @@ def test_empty_intersect():
 
 
 def test_intersect():
-    # not a complete testing
+    # not a complete testing
     f = Set_var([1], [1, 2, 3], (0, 2))
     g = Set_var([2], [1, 2, 3], (0, 2))
     h = Set_var([3], [2, 3], (1, 2))

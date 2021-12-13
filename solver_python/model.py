@@ -155,11 +155,11 @@ class Sgp:
             string += "|"
         return string
 
-    def print_sol(self):
+    def print_sol(self, lb=True):
         for w in range(len(self.schedule)):
             print("", end="| ")
             for g in range(len(self.schedule[w])):
-                for golfer in self.schedule[w, g].lb:
+                for golfer in (self.schedule[w, g].lb if lb else self.schedule[w, g].ub):
                     print("{:<2}".format(golfer), end=" ")
                 print("", end="| ")
             print("")

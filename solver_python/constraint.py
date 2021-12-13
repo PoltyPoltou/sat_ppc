@@ -28,15 +28,15 @@ class EmptyIntersection(Constraint):
         return [self.F, self.G]
 
     def filter(self) -> list[Memento]:
-        '''
-            return a set of elements to add from lb,
-            to remove from ub,
-            and the new couple of cardinality
-        '''
+        """
+        return a set of elements to add from lb,
+        to remove from ub,
+        and the new couple of cardinality
+        """
         filtering_list = []
-        # filtering F
+        # filtering F
         filtering_list.append(UB_memento(self.F, self.F.ub & self.G.lb))
-        # filtering G
+        # filtering G
         filtering_list.append(UB_memento(self.G, self.G.ub & self.F.lb))
         return filtering_list
 
@@ -58,27 +58,35 @@ class Intersection(Constraint):
 
     def filter(self) -> list[Memento]:
         filtering_list = []
-        # filtering F
+        # filtering F
         filtering_list.append(LB_memento(self.F, self.H.lb - self.F.lb))
-        filtering_list.append(UB_memento(
-            self.F, self.F.ub & self.G.lb - self.H.ub))
-        filtering_list.append(Card_memento(
-            self.F, (self.H.card_bounds[0], self.F.card_bounds[1])))
-        # filtering G
-        filtering_list.append(LB_memento(self.G, self.H.lb - self.G.lb))
-        filtering_list.append(UB_memento(
-            self.G, self.G.ub & self.F.lb - self.H.ub))
-        filtering_list.append(Card_memento(
-            self.G, (self.H.card_bounds[0], self.G.card_bounds[1])))
-        # filtering H
-        filtering_list.append(LB_memento(self.H, self.F.lb & self.G.lb))
-        filtering_list.append(UB_memento(
-            self.H, self.H.ub & (self.G.ub ^ self.F.ub)))
+        filtering_list.append(UB_memento(self.F, self.F.ub & self.G.lb - self.H.ub))
         filtering_list.append(
-            Card_memento(self.H,
-                         (len(self.F.lb & self.G.lb),
-                          min([len(self.F.ub & self.G.ub), self.F.card_bounds[1], self.G.card_bounds[1]]))
-                         )
+            Card_memento(self.F, (self.H.card_bounds[0], self.F.card_bounds[1]))
+        )
+        # filtering G
+        filtering_list.append(LB_memento(self.G, self.H.lb - self.G.lb))
+        filtering_list.append(UB_memento(self.G, self.G.ub & self.F.lb - self.H.ub))
+        filtering_list.append(
+            Card_memento(self.G, (self.H.card_bounds[0], self.G.card_bounds[1]))
+        )
+        # filtering H
+        filtering_list.append(LB_memento(self.H, self.F.lb & self.G.lb))
+        filtering_list.append(UB_memento(self.H, self.H.ub & (self.G.ub ^ self.F.ub)))
+        filtering_list.append(
+            Card_memento(
+                self.H,
+                (
+                    len(self.F.lb & self.G.lb),
+                    min(
+                        [
+                            len(self.F.ub & self.G.ub),
+                            self.F.card_bounds[1],
+                            self.G.card_bounds[1],
+                        ]
+                    ),
+                ),
+            )
         )
         return filtering_list
 
@@ -90,9 +98,9 @@ class Intersection(Constraint):
 
 
 class strict_less_than_by_min(Constraint):
-    '''
+    """
     represents a constraint F < G <=> min(F) < min(G)
-    '''
+    """
 
     def __init__(self, F, G) -> None:
         self.F = F
@@ -127,9 +135,9 @@ class strict_less_than_by_min(Constraint):
 
 
 class strict_less_than_by_max(Constraint):
-    '''
+    """
     represents a constraint F < G <=> max(F) < max(G)
-    '''
+    """
 
     def __init__(self, F, G) -> None:
         self.F = F

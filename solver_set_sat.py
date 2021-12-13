@@ -7,15 +7,14 @@ from set_sat_advanced import Set_Sat_Adv
 def init_set_variables(groups, size, weeks, sgp, n_golfers, schedule):
     for w in range(weeks):
         for g in range(groups):
-            if w == 1 and g == 2:
+            if w == 0:
                 schedule[w][g] = sgp.add_set_var(
-                    [2], [2, 3, 5, 6, 7, 8, 10, 11, 12, 13, 14])
-            elif w == 0:
-                schedule[w][g] = sgp.add_set_var(
-                    range(g*size, (g+1)*size), range(g*size, (g+1)*size))
+                    range(g * size, (g + 1) * size), range(g * size, (g + 1) * size)
+                )
             else:
                 schedule[w][g] = sgp.add_set_var(
-                    [i for i in range(size) if i % groups == g], range(n_golfers))
+                    [i for i in range(size) if i % groups == g], range(n_golfers)
+                )
 
 
 def init_constraints(groups, size, weeks, sgp, n_golfers, schedule):
@@ -33,23 +32,18 @@ def init_constraints(groups, size, weeks, sgp, n_golfers, schedule):
             for g1 in range(groups):
                 for g2 in range(groups):
                     k = sgp.add_set_var([], range(n_golfers))
-                    sgp.intersection(
-                        schedule[w1][g1], schedule[w2][g2], k, True, True)
+                    sgp.intersection(schedule[w1][g1], schedule[w2][g2], k, True, True)
                     sgp.cardinal_ub(k, 1)
     for w in range(weeks):
         sgp.order_by_min(schedule[w])
     sgp.order_by_max([schedule[w][0] for w in reversed(range(weeks))])
 
 
-def sgp_set_to_sat(groups,
-                   size,
-                   weeks,
-                   out=sys.stdout,
-                   sgp=Set_Sat()):
+def sgp_set_to_sat(groups, size, weeks, out=sys.stdout, sgp=Set_Sat()):
 
     model_start = time()
     n_golfers = size * groups
-    schedule = [[0]*groups for i in range(weeks)]
+    schedule = [[0] * groups for i in range(weeks)]
 
     init_set_variables(groups, size, weeks, sgp, n_golfers, schedule)
 
@@ -58,19 +52,27 @@ def sgp_set_to_sat(groups,
 
     mdl = sgp.solve()
     solve_end = time()
-    print("\n{}-{}-{}\nvariables : {} clauses : {}".format(groups, size,
-          weeks, sgp.idx_next_var-1, len(sgp.cnf.clauses)), file=out)
-    print("model : {:.2f}s solver : {:.2f}s".format(
-        model_end - model_start, solve_end - model_end), file=out)
+    print(
+        "\n{}-{}-{}\nvariables : {} clauses : {}".format(
+            groups, size, weeks, sgp.idx_next_var - 1, len(sgp.cnf.clauses)
+        ),
+        file=out,
+    )
+    print(
+        "model : {:.2f}s solver : {:.2f}s".format(
+            model_end - model_start, solve_end - model_end
+        ),
+        file=out,
+    )
 
     sol = sgp.model_to_set_solution(mdl)
     if sol != []:
-        for i in range(groups*weeks):
+        for i in range(groups * weeks):
             if i % groups == 0:
                 print("\n|", end="", file=out)
             for elmt in sol[i]:
                 print("{:<2}".format(elmt), end=" ", file=out)
-            print("| ", end="", file=out)
+            print("| ", end="", file=out)
         print("", file=out)
     else:
         print("UNSAT", file=out)

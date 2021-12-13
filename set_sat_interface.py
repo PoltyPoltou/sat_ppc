@@ -1,4 +1,3 @@
-
 class Set_Sat_interface:
     def __init__(self):
         raise NotImplementedError()
@@ -51,7 +50,7 @@ class Set_Sat_interface:
         self.add_clause([-x])
 
     def at_most_k(self, k, var_idx):
-        # http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.83.9527&rep=rep1&type=pdf
+        # http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.83.9527&rep=rep1&type=pdf
         n = len(var_idx)
         if n == k:
             return []
@@ -62,7 +61,7 @@ class Set_Sat_interface:
             return clauses
         else:
             s = []
-            for i in range(n-1):
+            for i in range(n - 1):
                 s.append([])
                 for j in range(k):
                     s[i].append(self.next_var())
@@ -72,34 +71,34 @@ class Set_Sat_interface:
             for j in range(1, k):
                 clauses.append([-s[0][j]])
 
-            for i in range(1, n-1):
+            for i in range(1, n - 1):
                 clauses.append([-var_idx[i], s[i][0]])
-                clauses.append([-s[i-1][0], s[i][0]])
+                clauses.append([-s[i - 1][0], s[i][0]])
                 for j in range(1, k):
-                    clauses.append([-var_idx[i], -s[i-1][j-1], s[i][j]])
-                    clauses.append([-s[i-1][j], s[i][j]])
-                clauses.append([-var_idx[i], -s[i-1][k-1]])
+                    clauses.append([-var_idx[i], -s[i - 1][j - 1], s[i][j]])
+                    clauses.append([-s[i - 1][j], s[i][j]])
+                clauses.append([-var_idx[i], -s[i - 1][k - 1]])
 
-            clauses.append([-var_idx[-1], -s[-1][k-1]])
+            clauses.append([-var_idx[-1], -s[-1][k - 1]])
             return clauses
 
     def latch(self, array_idx):
-        '''
-         defines a latch q_n function of variables x_n,
-         the indexes are given via array_idx\n
-         example : \n
-         x_n = 0 0 0 1 0 1 0 \n
-         q_n = 0 0 0 1 1 1 1 \n
-        '''
+        """
+        defines a latch q_n function of variables x_n,
+        the indexes are given via array_idx\n
+        example : \n
+        x_n = 0 0 0 1 0 1 0 \n
+        q_n = 0 0 0 1 1 1 1 \n
+        """
         latch_lst = []
         n = len(array_idx)
         for i in range(n):
             latch_lst.append(self.next_var())
         for i in range(1, n):
             self.add_clause([latch_lst[0], -array_idx[i]])
-            self.add_clause([-latch_lst[i], latch_lst[i-1]])
+            self.add_clause([-latch_lst[i], latch_lst[i - 1]])
             self.add_clause([-latch_lst[i], -array_idx[i]])
-            self.add_clause([latch_lst[i], array_idx[i-1], -latch_lst[i-1]])
+            self.add_clause([latch_lst[i], array_idx[i - 1], -latch_lst[i - 1]])
         return latch_lst
 
 
